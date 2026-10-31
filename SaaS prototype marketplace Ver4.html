@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS Prototype Marketplace — OECS Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .listing-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .listing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+        .badge-negotiable { background: #FEF3C7; color: #92400E; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; display: inline-block; }
+        .tag { background: #E0E7FF; color: #3730A3; font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; display: inline-block; margin: 2px; }
+        .cart-badge { position: absolute; top: -6px; right: -6px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: bold; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .sticky-filter { position: sticky; top: 0; z-index: 30; background: white; border-bottom: 1px solid #E5E7EB; }
+        .btn-launch { background: #059669; color: white; transition: background 0.2s ease, transform 0.1s ease; }
+        .btn-launch:hover { background: #047857; transform: scale(1.02); }
+        
+        .gsi-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #dadce0; border-radius: 4px; padding: 9px 16px; font-family: 'Roboto','Segoe UI',sans-serif; font-size: 14px; font-weight: 500; color: #3c4043; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; }
+        .gsi-btn:hover { background: #f8f9fa; box-shadow: 0 1px 2px rgba(60,64,67,0.30), 0 1px 3px 1px rgba(60,64,67,0.15); }
+        .gsi-btn svg { width: 18px; height: 18px; }
+
+        .admin-row { display: grid; grid-template-columns: 50px 1fr 150px 2fr 100px; gap: 12px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #E5E7EB; font-size: 13px; }
+        .admin-row:hover { background: #F9FAFB; }
+        .admin-row input[type="text"] { width: 100%; border: 1px solid #D1D5DB; border-radius: 6px; padding: 6px 10px; font-size: 12px; font-family: ui-monospace, monospace; }
+        .admin-row input[type="text"]:focus { outline: none; border-color: #6366F1; box-shadow: 0 0 0 2px rgba(99,102,241,0.15); }
+        .admin-row input[type="text"].modified { border-color: #F59E0B; background: #FFFBEB; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .status-ok { background: #10B981; }
+        .status-untested { background: #D1D5DB; }
+        
+        #appViewer { position: fixed; inset: 0; z-index: 100; background: #fff; display: none; flex-direction: column; }
+        #appViewer.active { display: flex; }
+        #appViewer iframe { flex: 1; border: none; width: 100%; }
+        #appViewer .viewer-bar { background: #1E293B; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; }
+        
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 80; display: none; align-items: center; justify-content: center; padding: 16px; }
+        .modal-overlay.active { display: flex; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                        <i class="fas fa-cubes text-xl"></i>
+                    </div>
+                    <h1 class="text-xl font-bold tracking-tight text-gray-900">
+                        SaaS Prototype <span class="text-indigo-600">Marketplace</span>
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleCart()" class="relative p-2 text-gray-600 hover:text-indigo-600 transition">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cartBadge" class="cart-badge hidden">0</span>
+                    </button>
+                    <button onclick="scrollToInquiry()" class="hidden sm:inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition">
+                        <i class="fas fa-paper-plane mr-2"></i> Inquire
+                    </button>
+                    <div id="authArea" class="flex items-center space-x-2">
+                        <button id="googleSignInBtn" class="gsi-btn" onclick="openGoogleSignIn()">
+                            <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                            Sign in with Google
+                        </button>
+                        <div id="userMenu" class="hidden items-center space-x-2">
+                            <div id="userAvatar" class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm"></div>
+                            <div class="hidden sm:block text-right">
+                                <p id="userName" class="text-xs font-semibold text-gray-900 leading-tight"></p>
+                                <p id="userEmail" class="text-xs text-gray-500 leading-tight"></p>
+                            </div>
+                            <button id="adminBtn" class="hidden items-center px-3 py-1.5 bg-amber-500 text-white text-xs font-semibold rounded-lg hover:bg-amber-600 transition" onclick="openAdminPanel()">
+                                <i class="fas fa-sliders-h mr-1"></i> Admin
+                            </button>
+                            <button onclick="signOut()" class="text-gray-400 hover:text-red-500 transition" title="Sign out">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-r from-indigo-700 to-indigo-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div class="max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Explore <span id="heroCount">42</span> Ready-to-Deploy Software Prototypes</h2>
+                <p class="mt-4 text-lg text-indigo-200">Enterprise-grade platforms across real estate, finance, climate, e-gov, compliance, healthcare, and more. Built with React, TypeScript, Python, and modern APIs.</p>
+                <div class="mt-6 flex items-center space-x-3">
+                    <span class="badge-negotiable text-sm">Price negotiable; let's talk</span>
+                    <span class="text-indigo-200 text-sm">|</span>
+                    <span class="text-indigo-200 text-sm">Hand off to your dev team or we build it for you.</span>
+                </div>
+                <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="searchInput" placeholder="Search by name, industry, or tech stack..." class="w-full pl-12 pr-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    </div>
+                    <button onclick="scrollToGrid()" class="px-6 py-3 bg-white text-indigo-700 font-semibold rounded-xl hover:bg-gray-100 transition">Browse Listings</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="sticky-filter bg-white border-b border-gray-200 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-filter text-gray-400"></i>
+                    <span class="text-sm font-medium text-gray-700">Filter:</span>
+                </div>
+                <select id="industryFilter" class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    <option value="">All Industries</option>
+                </select>
+                <select id="typeFilter" class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    <option value="">All Types</option>
+                </select>
+                <select id="sortSelect" class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    <option value="name">Sort: Name (A-Z)</option>
+                    <option value="weeks">Sort: Quickest Build</option>
+                    <option value="industry">Sort: Industry</option>
+                </select>
+                <div class="ml-auto text-sm text-gray-500">
+                    <span id="resultCount">42</span> listings
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listings Grid -->
+    <main id="listingsGrid" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="noResults" class="hidden text-center py-16">
+            <i class="fas fa-search text-5xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 text-lg">No listings match your search.</p>
+        </div>
+    </main>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="text-lg font-bold text-gray-900"><i class="fas fa-shopping-cart mr-2 text-indigo-600"></i> Inquiry Cart</h3>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+        <div class="p-4 border-t bg-gray-50">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-gray-600">Total items</span>
+                <span id="cartTotal" class="font-bold text-gray-900">0</span>
+            </div>
+            <p class="text-xs text-amber-600 mb-3"><i class="fas fa-info-circle mr-1"></i> Price negotiable; let's talk</p>
+            <button onclick="openInquiryFromCart()" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                <i class="fas fa-paper-plane mr-2"></i> Proceed to Inquiry
+            </button>
+            <button onclick="clearCart()" class="w-full mt-2 py-2 text-sm text-gray-500 hover:text-red-600 transition">Clear cart</button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden" onclick="toggleCart()"></div>
+
+    <!-- Inquiry Modal -->
+    <div id="inquiryModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-bold text-gray-900">Inquire About These Prototypes</h3>
+                <button onclick="closeInquiry()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6">
+                <div id="inquiryCartList" class="mb-4 bg-gray-50 rounded-lg p-3 text-sm text-gray-700 max-h-32 overflow-y-auto"></div>
+                <p class="text-sm text-amber-600 mb-4"><i class="fas fa-info-circle mr-1"></i> Price negotiable; let's talk about your needs.</p>
+                <form id="inquiryForm" onsubmit="submitInquiry(event)">
+                    <div class="space-y-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Name *</label><input type="text" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Your full name"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Email *</label><input type="email" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="you@company.com"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Company</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Company name"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Message</label><textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Tell us about your project, timeline, and budget range..."></textarea></div>
+                    </div>
+                    <button type="submit" class="mt-6 w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-paper-plane mr-2"></i> Send Inquiry</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 id="detailTitle" class="text-xl font-bold text-gray-900"></h3>
+                <button onclick="closeDetail()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div id="detailBody" class="p-6"></div>
+        </div>
+    </div>
+
+    <!-- Google Sign-In Modal -->
+    <div id="googleModal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full overflow-hidden" style="font-family: 'Roboto', 'Segoe UI', sans-serif;">
+            <div class="p-8 text-center border-b border-gray-200">
+                <svg viewBox="0 0 48 48" class="w-10 h-10 mx-auto mb-4"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                <h2 class="text-2xl font-normal text-gray-900 mb-1">Sign in</h2>
+                <p class="text-sm text-gray-600">to continue to <strong>SaaS Prototype Marketplace</strong></p>
+            </div>
+            <div class="p-6">
+                <p class="text-xs text-gray-500 mb-4 uppercase tracking-wider font-semibold">Choose an account</p>
+                <div id="googleAccounts" class="space-y-2 mb-6"></div>
+                <div class="border-t pt-4">
+                    <label class="text-xs text-gray-500 mb-2 block">Or enter your email manually:</label>
+                    <input id="manualEmail" type="email" placeholder="you@oecstrading.com" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <button onclick="submitManualEmail()" class="mt-2 w-full py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 transition">Continue</button>
+                </div>
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
+                    <strong><i class="fas fa-shield-alt mr-1"></i> Demo mode:</strong> Admin access is limited to authorized emails (default: <code>cuthbert@oecstrading.com</code>).
+                </div>
+            </div>
+            <div class="px-6 pb-4 flex justify-between items-center text-xs text-gray-500">
+                <span>English (US)</span>
+                <button onclick="closeGoogleModal()" class="text-blue-600 hover:underline font-medium">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal (Expanded CRUD) -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-60 z-[70] hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-7xl w-full max-h-[95vh] flex flex-col">
+            <div class="flex items-center justify-between p-5 border-b bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-t-2xl">
+                <div>
+                    <h3 class="text-lg font-bold"><i class="fas fa-sliders-h mr-2"></i> Admin — App Manager</h3>
+                    <p class="text-xs opacity-90 mt-1">Create, edit, delete and manage URLs for all applications.</p>
+                </div>
+                <button onclick="closeAdminPanel()" class="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div class="p-4 border-b bg-gray-50 flex flex-wrap items-center gap-3">
+                <div class="relative flex-1 min-w-[200px]">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input id="adminSearch" type="text" placeholder="Search listings..." class="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+                <span id="adminDirtyCount" class="text-xs font-semibold text-amber-700 bg-amber-100 px-3 py-1.5 rounded-full">0 modified</span>
+                <button onclick="openAppForm()" class="px-4 py-2 text-sm font-medium bg-indigo-600 text-white border border-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+                    <i class="fas fa-plus mr-1"></i> Add New App
+                </button>
+                <button onclick="saveAllUrls()" class="px-5 py-2 text-sm font-semibold bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition">
+                    <i class="fas fa-save mr-1"></i> Save Changes
+                </button>
+            </div>
+
+            <!-- Column headers -->
+            <div class="admin-row bg-gray-100 font-semibold text-xs uppercase tracking-wider text-gray-600 border-b">
+                <div>ID</div>
+                <div>App Title</div>
+                <div>Category</div>
+                <div>App URL</div>
+                <div class="text-right">Actions</div>
+            </div>
+
+            <div id="adminRows" class="flex-1 overflow-y-auto"></div>
+
+            <div class="p-4 border-t bg-gray-50 flex flex-wrap items-center justify-between gap-3 rounded-b-2xl">
+                <div class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <strong>Tips:</strong> Use full URLs (<code>https://...</code>) for external links, or relative paths (<code>app.html</code>) for local hosting.
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="exportUrlConfig()" class="px-4 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-download mr-1"></i> Export Config
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Edit/Create Form Modal -->
+    <div id="appFormModal" class="modal-overlay">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-5 border-b bg-indigo-50 rounded-t-2xl">
+                <h3 id="appFormTitle" class="text-lg font-bold text-indigo-900">Edit App Details</h3>
+                <button onclick="closeAppForm()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <form id="appForm" class="p-6 space-y-4" onsubmit="saveAppForm(event)">
+                <input type="hidden" id="formAppId">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">App Title</label>
+                        <input type="text" id="formAppTitle" required class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Category (Industry)</label>
+                        <select id="formAppIndustry" required class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <input type="text" id="formAppNewIndustry" class="w-full mt-2 border border-gray-300 rounded-lg px-3 py-2 hidden" placeholder="Type new category name...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <input type="text" id="formAppType" required class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Build Weeks</label>
+                        <input type="number" id="formAppWeeks" required class="w-full border border-gray-300 rounded-lg px-3 py-2" min="1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">App URL</label>
+                        <input type="text" id="formAppUrl" required class="w-full border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tech Stack (comma separated)</label>
+                        <input type="text" id="formAppTech" required class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="formAppDesc" required rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2"></textarea>
+                    </div>
+                </div>
+                <div class="pt-4 border-t flex justify-end gap-3">
+                    <button type="button" onclick="closeAppForm()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+                    <button type="submit" class="px-6 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Save App</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- App Viewer Overlay -->
+    <div id="appViewer">
+        <div class="viewer-bar">
+            <div class="flex items-center space-x-3">
+                <button onclick="closeAppViewer()" class="text-white hover:text-indigo-300 transition" title="Press ESC to return"><i class="fas fa-arrow-left text-lg"></i></button>
+                <span id="appViewerTitle" class="font-semibold">App Preview</span>
+                <span id="appViewerUrl" class="text-xs text-gray-400 font-mono hidden sm:inline"></span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="reloadAppViewer()" class="text-white hover:text-indigo-300 transition text-sm" title="Reload"><i class="fas fa-redo"></i></button>
+                <div class="flex items-center space-x-2 text-sm text-gray-300"><kbd class="px-2 py-1 bg-gray-700 rounded text-xs">ESC</kbd><span class="hidden sm:inline">to return</span></div>
+            </div>
+        </div>
+        <iframe id="appIframe" src="about:blank" title="App Preview" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"></iframe>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-gray-500">
+            <p>© 2025 OECS Trading. All prototypes available for licensing or custom development.</p>
+            <p class="mt-1">Price negotiable; let's talk. <a href="#" class="text-indigo-600 hover:underline">Contact us</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Data & State ---
+        const ADMIN_EMAILS = ['cuthbert@oecstrading.com', 'admin@oecstrading.com'];
+        
+        // Default listings (from JSON)
+        const initialListings = [
+            { id: 1, title: "Antillia Platform", industry: "Real Estate", type: "Property Intelligence", description: "Caribbean property intelligence with due diligence built in — every listing source-checked and assessed for hurricane risk, provenance and investment fit.", tech_stack: ["React", "TypeScript", "AI Search"], weeks: 4, featured: true, current_url: "https://oecstrading.com/antillia" },
+            { id: 2, title: "Infrastructure PMIS", industry: "Project Management", type: "Platform", description: "Unified platform for internal infrastructure projects and customer loan portfolio management. Features real-time budget tracking, compliance monitoring, and stage-gated disbursements.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 6, featured: false, current_url: "https://oecstrading.com/pmis" },
+            { id: 3, title: "FaMaaS - Fixed Assets Management", industry: "Accounting & Finance", type: "Asset Management", description: "A sophisticated multi-tenant platform for tracking, managing, and optimizing fixed assets across organizations. Features automated depreciation calculations, compliance reporting, and complete asset lifecycle management.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 5, featured: false, current_url: "https://oecstrading.com/famaas" },
+            { id: 4, title: "BetterBooks Caribbean for QuickBooks", industry: "Accounting & Finance", type: "Integration", description: "Three modules — POS, Payroll and VAT Reporter — that post every transaction, pay run and VAT return straight into QuickBooks. Built specifically for the Caribbean's statutory and tax landscape.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 5, featured: false, current_url: "https://oecstrading.com/betterbooks" },
+            { id: 5, title: "IFRS & GAAP AI Statement Generator", industry: "Accounting & Finance", type: "AI Reporting", description: "An AI-assisted reporting studio that turns ledger data into IFRS- and GAAP-aligned financial statements and audit workpapers.", tech_stack: ["React", "TypeScript", "Generative AI"], weeks: 5, featured: false, current_url: "https://oecstrading.com/ifrs" },
+            { id: 6, title: "EcoChill Proposa-Link", industry: "Climate & dMRV", type: "Proposal Platform", description: "An enterprise proposal platform for refrigeration efficiency upgrades and microgrid engineering projects.", tech_stack: ["React", "TypeScript", "Energy Modeling"], weeks: 4, featured: false, current_url: "https://oecstrading.com/ecochill" },
+            { id: 7, title: "Belize Blue Economy MRV MIS", industry: "Climate & dMRV", type: "MIS / MRV", description: "A full-stack MIS and MRV dashboard aligned with Belize's Sustainable Ocean Plan and coastal investment priorities.", tech_stack: ["React", "TypeScript", "MRV"], weeks: 5, featured: false, current_url: "https://oecstrading.com/belize" },
+            { id: 8, title: "Caribbean Finance Hub", industry: "Accounting & Finance", type: "Loan Management", description: "A specialized IFRS for SMEs workspace for managing micro-loans, collections, expected credit loss, and portfolio performance.", tech_stack: ["React", "TypeScript", "Loan Management"], weeks: 4, featured: false, current_url: "https://oecstrading.com/financehub" },
+            { id: 9, title: "Easy Sales Cloud", industry: "Accounting & Finance", type: "POS", description: "A modern multi-location retail POS with inventory, customer management, staff controls, and QuickBooks connectivity.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/easysales" },
+            { id: 10, title: "VAT Reporter AI", industry: "Accounting & Finance", type: "Tax Compliance", description: "An AI-powered VAT/GST return preparation and compliance platform that automates tax calculations, validates data against local regulations, and generates submission-ready returns.", tech_stack: ["React", "TypeScript", "AI/ML"], weeks: 4, featured: false, current_url: "https://oecstrading.com/vat" },
+            { id: 11, title: "Gender and Climate Finance Tagging Platform", industry: "Climate & dMRV", type: "Climate Finance", description: "A sovereign climate-finance workspace for project documentation, gender tagging, MRV, and investment pitch development.", tech_stack: ["React", "TypeScript", "MRV"], weeks: 5, featured: false, current_url: "https://oecstrading.com/gender" },
+            { id: 12, title: "Dominica DOMCREP M&E MIS", industry: "Climate & dMRV", type: "M&E", description: "A secure monitoring and evaluation system for tracking resilience-program results, activities, indicators, and evidence.", tech_stack: ["React", "TypeScript", "M&E Framework"], weeks: 5, featured: false, current_url: "https://oecstrading.com/domcrep" },
+            { id: 13, title: "Grenada UBEC Blue Economy M&E", industry: "Climate & dMRV", type: "M&E", description: "A comprehensive monitoring and evaluation platform for Grenada's blue economy investment program.", tech_stack: ["React", "TypeScript", "M&E"], weeks: 5, featured: false, current_url: "https://oecstrading.com/grenada" },
+            { id: 14, title: "OECS AI Institute Platform", industry: "Business Incubator", type: "Learning Management", description: "The central hub for our virtual incubator, featuring learning management, mentorship matching, and resource libraries.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 4, featured: false, current_url: "https://oecstrading.com/aiinstitute" },
+            { id: 15, title: "Close Command Hub", industry: "Accounting & Finance", type: "Workflow Management", description: "A month-end close management command center that turns the financial close into a tracked, auditable workflow.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 3, featured: false, current_url: "https://oecstrading.com/close" },
+            { id: 16, title: "Executive Portfolio Hub", industry: "Accounting & Finance", type: "Portfolio Analytics", description: "A private wealth command center consolidating entities, investments, liabilities, cash flow, and portfolio performance.", tech_stack: ["React", "TypeScript", "Portfolio Analytics"], weeks: 4, featured: false, current_url: "https://oecstrading.com/portfolio" },
+            { id: 17, title: "QuickBooks Utility Tools", industry: "Accounting & Finance", type: "Utility Tools", description: "A suite of specialized utility tools that extend QuickBooks Online functionality for power users and accountants.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 3, featured: false, current_url: "https://oecstrading.com/qbutils" },
+            { id: 18, title: "JACS Restaurant Management", industry: "Accounting & Finance", type: "Restaurant POS", description: "A comprehensive restaurant management system featuring POS dashboard, kitchen orders, table management with QR code self-ordering, and WhatsApp broadcast automation.", tech_stack: ["React", "Multi-panel POS", "WhatsApp API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/jacs" },
+            { id: 19, title: "E-Testing Driver's License", industry: "E-Gov Solutions", type: "E-Government", description: "A modern, secure, and scalable e-testing solution for OECS governments to digitize driver's license examinations.", tech_stack: ["React", "Python", "Django"], weeks: 8, featured: false, current_url: "https://oecstrading.com/etesting" },
+            { id: 20, title: "eLandSaintLucia", industry: "E-Gov Solutions", type: "Land Information System", description: "An AI-powered digital land information system with cadastral mapping, parcel search, blockchain-verified entries, and ISO 19152 LADM compliance.", tech_stack: ["React", "GIS/Mapbox", "Blockchain"], weeks: 6, featured: false, current_url: "https://oecstrading.com/eland" },
+            { id: 21, title: "JACS Hospice Management Platform", industry: "Health Solutions", type: "Healthcare Management", description: "An enterprise hospice management platform for patient records, care plans, staff scheduling, and facility operations with comprehensive compliance tracking.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 5, featured: false, current_url: "https://oecstrading.com/hospice" },
+            { id: 22, title: "BetterBooks Caribbean Marketing Page", industry: "Marketing", type: "Landing Page", description: "A sleek, conversion-focused marketing landing page that showcases the full BetterBooks Caribbean suite.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 2, featured: false, current_url: "https://oecstrading.com/betterbooks-marketing" },
+            { id: 23, title: "TV & Radio Financial Management System", industry: "Accounting & Finance", type: "Media Finance", description: "A comprehensive financial management system for media and broadcasting companies with campaign tracking and automated proof of play.", tech_stack: ["React", "Campaign Tracking", "Proof of Play"], weeks: 5, featured: false, current_url: "https://oecstrading.com/tvradio" },
+            { id: 24, title: "MLS Real Estate Marketplace", industry: "Real Estate", type: "Marketplace", description: "A centralized Multiple Listing Service (MLS) platform connecting real estate professionals and buyers across the OECS.", tech_stack: ["React", "Next.js", "Mapbox"], weeks: 7, featured: false, current_url: "https://oecstrading.com/mls" },
+            { id: 25, title: "OECS Realtors Platform", industry: "Real Estate", type: "Marketplace", description: "A multi-asset Caribbean marketplace for property, land, vehicles, equipment, and investment opportunities.", tech_stack: ["React", "TypeScript", "Marketplace"], weeks: 4, featured: false, current_url: "https://oecstrading.com/realtors" },
+            { id: 26, title: "Wheels Works Auto Shop", industry: "Accounting & Finance", type: "Auto Shop Management", description: "A complete financial and operational management system tailored for the automotive service industry.", tech_stack: ["React", "Supabase", "Calendar API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/wheels" },
+            { id: 27, title: "OECS Trading Platform", industry: "Trade / Logistics", type: "Digital Gateway", description: "A comprehensive digital gateway connecting Caribbean businesses with US and global trade partners.", tech_stack: ["React", "Node.js", "PostgreSQL"], weeks: 6, featured: false, current_url: "https://oecstrading.com/trading" },
+            { id: 28, title: "Smiley's Tinting Plus — Business & Inspection Hub", industry: "Automotive Services", type: "Business Operations", description: "Dark-themed operations hub for a Caribbean tinting/detailing business. Features 6-step vehicle inspection, AI damage detection, 360° spin viewer, before/after slider, live walkaround, Coating Club membership tracking, and PDF proposals.", tech_stack: ["Vanilla JS", "Tailwind", "Canvas", "SVG"], weeks: 5, featured: true, current_url: "/apps/smileys-tinting-plus.html" },
+            { id: 29, title: "Audit Studio — AI-Powered Audit Platform", industry: "Accounting & Finance", type: "Audit Management", description: "Enterprise audit platform with Planning→Execution→Completion workflow, trial balance auto-mapping, materiality scoping, risk-assertion matrix, DeepSeek AI assistant, SHA-256 audit log, AES-256-GCM vault, TOTP MFA, and budget prediction.", tech_stack: ["Vanilla JS", "Web Crypto", "DeepSeek V4.1", "XLSX"], weeks: 10, featured: true, current_url: "/apps/audit-studio.html" },
+            { id: 30, title: "Caribbean Gas Intelligence — dMRV Monitoring System", industry: "Climate & dMRV", type: "IoT Monitoring", description: "LPG cylinder + biogas digester monitoring for St. Lucia pilot. Features 4-scene animated demo, 6-step auto-order flow (5% trigger → SMS/WhatsApp → payment), Wepay/Card/Bank/Pay-on-Delivery, and full user guide for 5 roles.", tech_stack: ["Vanilla JS", "SVG Animation", "IoT APIs", "Wepay"], weeks: 8, featured: false, current_url: "/apps/caribbean-gas-intelligence.html" },
+            { id: 31, title: "Antillia Skills Bank — Verified Professionals", industry: "HR & Recruitment", type: "Talent Marketplace", description: "Caribbean talent marketplace connecting verified professionals with clients. Features sector/availability filters, worker cards with verified badges, ratings, hourly rates, and detailed profile modals.", tech_stack: ["Vanilla JS", "CSS Grid", "localStorage"], weeks: 3, featured: false, current_url: "/apps/antillia-skills-bank.html" },
+            { id: 32, title: "Biogas St. Lucia — Northern Pilot (Gros Islet)", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "6 m³ modular biogas digester pilot in Gros Islet/Rodney Bay. 13-tab dashboard: PFD, P&ID, mechanical, civil, electrical, carbon accounting, financials. Scale-up from 30 to 2,000 cylinders with IRR/payback.", tech_stack: ["Vanilla JS", "SVG", "Engineering Engine"], weeks: 6, featured: false, current_url: "/apps/biogas-stlucia-north.html" },
+            { id: 33, title: "Biogas St. Lucia — Vieux Fort Pilot", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "4 m³ modular biogas digester pilot in Vieux Fort. 3.0 m³/day biogas, 30 CNG cylinders, $91,760 CAPEX, 1.4-year payback at scale, 42% IRR, 8 tCO₂e/year. Full PFD, P&ID, BoQ, workflows.", tech_stack: ["Vanilla JS", "SVG", "Engineering Engine"], weeks: 6, featured: false, current_url: "/apps/biogas-stlucia-vieuxfort.html" },
+            { id: 34, title: "COSMOS Biogas Haiti — Filling Station Pilot", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "Biogas filling station evaluation for Les Cayes, Haiti. 5-tab interface covering overview, financial model, technical, carbon & dMRV, and scale-up viability. Best-features integration from Uganda, Kenya, India, Nepal.", tech_stack: ["Vanilla JS", "SVG", "Carbon Accounting"], weeks: 5, featured: false, current_url: "/apps/cosmos-biogas-haiti.html" },
+            { id: 35, title: "Biogas Haiti — Industrial Division (1,000 m³)", industry: "Climate & dMRV", type: "Engineering Presentation", description: "Industrial-scale 1,000 m³ digester serving 200 households + 10 commercial kitchens. $352,880 CAPEX, $194,700 revenue, 3.1-year payback, 28.4% IRR. 18-month timeline, risk mitigation, 9-source best-features.", tech_stack: ["Vanilla JS", "Financial Modeling"], weeks: 5, featured: false, current_url: "/apps/biogas-haiti-industrial.html" },
+            { id: 36, title: "BiogasSTLucia — GCF/CDB Concept Note", industry: "Climate Finance", type: "Grant Concept Note", description: "Print-ready GCF/CDB submission concept note. 18 sections covering Executive Summary, Theory of Change, Market Analysis, Economic Viability, Competitive Landscape, Financial Model, GCF Criteria, Financing ($8.2M), Safeguards, M&E, Budget. Includes 3 annexes.", tech_stack: ["HTML/CSS", "Print-Optimized"], weeks: 4, featured: false, current_url: "/apps/biogas-stlucia-concept-note.html" },
+            { id: 37, title: "Rivet & Roan Barber Co. — Booking Platform", industry: "Hospitality", type: "Appointment Booking", description: "One-chair barbershop booking platform. 4-step customer flow with live availability engine (respects lunch + existing bookings), deposit-backed booking, SMS reminders, owner dashboard with KPIs, automation feed, waitlist auto-fill.", tech_stack: ["Vanilla JS", "Availability Engine"], weeks: 4, featured: false, current_url: "/apps/rivet-roan-barber.html" },
+            { id: 38, title: "CaribCarbon — Caribbean Climate Asset Marketplace", industry: "Climate Finance", type: "Marketplace", description: "Multi-asset climate finance marketplace: Blue Carbon, Solar, Wind, Biogas, Geothermal, EVs, Refrigeration, Efficiency, Agroforestry. Interactive calculators with 16 country parameters, 85% revenue share, featured projects portfolio.", tech_stack: ["Vanilla JS", "SVG", "Carbon Engine"], weeks: 6, featured: true, current_url: "/apps/caribcarbon-marketplace.html" },
+            { id: 39, title: "The AI AML/CFT Compliance Auditor — Standalone", industry: "Compliance & Legal", type: "Audit & Compliance", description: "Browser-local AML/CFT audit platform. Password-gated, 9-control checklist, deficiency tracker, workpaper library, CSV/XLSX import with field mapping, 7 regulator-format templates (FSRC, FSRA, GARFIN, ECCB, CFATF, UAE, Universal), IFRS SME authoring, and local attestation workflow.", tech_stack: ["Vanilla JS", "Web Crypto", "XLSX", "localStorage"], weeks: 8, featured: false, current_url: "/apps/aml-cft-auditor.html" },
+            { id: 40, title: "Caribbean Micro-Lending Enterprise Matrix", industry: "Accounting & Finance", type: "Loan Management", description: "Loan management for Caribbean micro-lenders. Performance dashboard (yield, NPL, capital adequacy, tax provision), central ledger, IFRS aging matrix, credit underwriting card, financial statements (IFRS-SME), St. Kitts tax bridge, RBAC, XCD/USD toggle.", tech_stack: ["Tailwind", "SheetJS", "RBAC", "IFRS-SME"], weeks: 6, featured: false, current_url: "/apps/micro-lending-matrix.html" },
+            { id: 41, title: "AI Financial Statement Generator — Audit Platform", industry: "Accounting & Finance", type: "Financial Reporting", description: "Converts trial balance to IFRS for SMEs financial statements. 4-step workflow (Upload & Map → Statements → Review & Edit → Export), auto-mapping, placeholder tracking, contenteditable review, PDF/Excel export, saved projects.", tech_stack: ["XLSX", "html2pdf", "contenteditable"], weeks: 5, featured: false, current_url: "/apps/financial-statement-generator.html" },
+            { id: 42, title: "JACS Payroll — Caribbean-Compliant Payroll for QuickBooks", industry: "Accounting & Finance", type: "Payroll Platform", description: "Caribbean payroll for 9 islands (St. Lucia, Barbados, Jamaica, Trinidad, Grenada, Dominica, St. Kitts, St. Vincent, Antigua). Auto NIS/PAYE/Health Surcharge, QuickBooks journal posting, statutory returns (TD4, P45/P60), bank file export, and AI payroll audit.", tech_stack: ["HTML/CSS", "SVG", "DeepSeek AI", "QuickBooks API"], weeks: 7, featured: true, current_url: "/apps/jacs-payroll.html" }
+        ];
+
+        // Load state from localStorage or initialize
+        let listings = JSON.parse(localStorage.getItem('saasListingsData')) || initialListings;
+        let cart = JSON.parse(localStorage.getItem('saasCart')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('saasUser') || 'null');
+        let currentFilter = { industry: '', type: '', search: '', sort: 'name' };
+        let adminModalOpen = false;
+
+        // --- Helpers ---
+        function saveListings() { localStorage.setItem('saasListingsData', JSON.stringify(listings)); }
+        function saveCart() { localStorage.setItem('saasCart', JSON.stringify(cart)); updateCartUI(); }
+        function getListingById(id) { return listings.find(l => l.id === id); }
+        function isAdmin() { return currentUser && ADMIN_EMAILS.map(e => e.toLowerCase()).includes((currentUser.email || '').toLowerCase()); }
+        function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        // --- Render: Public Grid ---
+        function renderListings() {
+            const grid = document.getElementById('grid');
+            const noResults = document.getElementById('noResults');
+            let filtered = [...listings];
+
+            if (currentFilter.search) {
+                const q = currentFilter.search.toLowerCase();
+                filtered = filtered.filter(l => l.title.toLowerCase().includes(q) || l.industry.toLowerCase().includes(q) || l.type.toLowerCase().includes(q) || (l.tech_stack || []).some(t => t.toLowerCase().includes(q)));
+            }
+            if (currentFilter.industry) filtered = filtered.filter(l => l.industry === currentFilter.industry);
+            if (currentFilter.type) filtered = filtered.filter(l => l.type === currentFilter.type);
+
+            if (currentFilter.sort === 'name') filtered.sort((a, b) => a.title.localeCompare(b.title));
+            else if (currentFilter.sort === 'weeks') filtered.sort((a, b) => a.weeks - b.weeks);
+            else if (currentFilter.sort === 'industry') filtered.sort((a, b) => a.industry.localeCompare(b.industry));
+
+            document.getElementById('resultCount').textContent = filtered.length;
+            document.getElementById('heroCount').textContent = listings.length;
+
+            if (filtered.length === 0) { grid.innerHTML = ''; noResults.classList.remove('hidden'); return; }
+            noResults.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(listing => {
+                const hasUrl = listing.current_url && listing.current_url.trim();
+                return `
+                <div class="listing-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                    <div class="p-5 flex-1 flex flex-col">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">${escapeHtml(listing.industry)}</span>
+                                <h3 class="text-lg font-bold text-gray-900 mt-1 leading-tight">${escapeHtml(listing.title)}</h3>
+                            </div>
+                            ${listing.featured ? '<span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded-full">Featured</span>' : ''}
+                        </div>
+                        <p class="text-sm text-gray-600 line-clamp-3 mb-3 flex-1">${escapeHtml(listing.description)}</p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            ${(listing.tech_stack || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="far fa-clock mr-1"></i> ${listing.weeks} weeks
+                            <span class="mx-2">•</span>
+                            <span class="badge-negotiable">Price negotiable; let's talk</span>
+                        </div>
+                        <div class="flex items-center space-x-2 mt-auto">
+                            <button onclick="addToCart(${listing.id})" class="flex-1 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                                <i class="fas fa-plus mr-1"></i> Add to Inquiry
+                            </button>
+                            <button onclick="openDetail(${listing.id})" class="px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${hasUrl ? `
+                            <button onclick="launchApp(${listing.id})" class="btn-launch px-3 py-2 text-sm font-medium rounded-lg" title="Take Me to the App">
+                                <i class="fas fa-external-link-alt mr-1"></i> App
+                            </button>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // --- Render: Admin Grid ---
+        function renderAdminRows() {
+            const container = document.getElementById('adminRows');
+            const search = (document.getElementById('adminSearch').value || '').toLowerCase();
+            const filtered = listings.filter(l => !search || l.title.toLowerCase().includes(search) || l.industry.toLowerCase().includes(search));
+
+            container.innerHTML = filtered.map(l => {
+                return `
+                    <div class="admin-row">
+                        <div class="text-gray-500 font-mono text-xs">#${l.id}</div>
+                        <div>
+                            <div class="font-semibold text-gray-900 text-xs leading-tight">${escapeHtml(l.title)}</div>
+                        </div>
+                        <div>
+                            <span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs">${escapeHtml(l.industry)}</span>
+                        </div>
+                        <div>
+                            <input type="text" value="${escapeHtml(l.current_url || '')}" onblur="updateListingUrl(${l.id}, this.value)" placeholder="https://... or relative.html">
+                            <div class="text-xs text-gray-400 mt-1 truncate">
+                                <i class="fas fa-info-circle mr-1"></i>Target: <span class="font-mono">${escapeHtml(l.current_url || 'None')}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-2">
+                            <button onclick="openAppForm(${l.id})" class="text-indigo-600 hover:text-indigo-800 p-1" title="Edit Details">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteListing(${l.id})" class="text-red-500 hover:text-red-700 p-1" title="Delete App">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- Category Logic ---
+        function populateFilters() {
+            const industries = [...new Set(listings.map(l => l.industry))].sort();
+            const types = [...new Set(listings.map(l => l.type))].sort();
+            
+            const industrySelect = document.getElementById('industryFilter');
+            const typeSelect = document.getElementById('typeFilter');
+            
+            // Preserve current selection
+            const currentInd = industrySelect.value;
+            const currentType = typeSelect.value;
+
+            industrySelect.innerHTML = '<option value="">All Industries</option>' + industries.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
+            typeSelect.innerHTML = '<option value="">All Types</option>' + types.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+            
+            industrySelect.value = currentInd;
+            typeSelect.value = currentType;
+        }
+
+        function populateFormCategories(selectedValue) {
+            const industries = [...new Set(listings.map(l => l.industry))].sort();
+            const select = document.getElementById('formAppIndustry');
+            const newInput = document.getElementById('formAppNewIndustry');
+            
+            let options = industries.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
+            options += '<option value="__NEW__">+ Add new category...</option>';
+            
+            select.innerHTML = options;
+            
+            if (selectedValue && industries.includes(selectedValue)) {
+                select.value = selectedValue;
+                newInput.classList.add('hidden');
+            } else if (selectedValue) {
+                select.value = '__NEW__';
+                newInput.classList.remove('hidden');
+                newInput.value = selectedValue;
+            } else {
+                select.value = '';
+                newInput.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('formAppIndustry').addEventListener('change', function() {
+            const newInput = document.getElementById('formAppNewIndustry');
+            if (this.value === '__NEW__') {
+                newInput.classList.remove('hidden');
+                newInput.focus();
+            } else {
+                newInput.classList.add('hidden');
+                newInput.value = '';
+            }
+        });
+
+        // --- CRUD Logic ---
+        function openAppForm(id = null) {
+            const form = document.getElementById('appForm');
+            form.reset();
+            
+            if (id) {
+                const l = getListingById(id);
+                document.getElementById('appFormTitle').textContent = 'Edit App Details';
+                document.getElementById('formAppId').value = l.id;
+                document.getElementById('formAppTitle').value = l.title;
+                document.getElementById('formAppType').value = l.type;
+                document.getElementById('formAppWeeks').value = l.weeks;
+                document.getElementById('formAppUrl').value = l.current_url;
+                document.getElementById('formAppTech').value = (l.tech_stack || []).join(', ');
+                document.getElementById('formAppDesc').value = l.description;
+                populateFormCategories(l.industry);
+            } else {
+                document.getElementById('appFormTitle').textContent = 'Add New App';
+                document.getElementById('formAppId').value = '';
+                document.getElementById('formAppWeeks').value = 4;
+                populateFormCategories('');
+            }
+            
+            document.getElementById('appFormModal').classList.add('active');
+        }
+
+        function closeAppForm() {
+            document.getElementById('appFormModal').classList.remove('active');
+        }
+
+        function saveAppForm(e) {
+            e.preventDefault();
+            const id = document.getElementById('formAppId').value;
+            
+            let industry = document.getElementById('formAppIndustry').value;
+            if (industry === '__NEW__') {
+                industry = document.getElementById('formAppNewIndustry').value.trim();
+                if (!industry) { alert('Please enter the new category name.'); return; }
+            }
+            
+            const data = {
+                title: document.getElementById('formAppTitle').value.trim(),
+                industry: industry,
+                type: document.getElementById('formAppType').value.trim(),
+                weeks: parseInt(document.getElementById('formAppWeeks').value),
+                current_url: document.getElementById('formAppUrl').value.trim(),
+                tech_stack: document.getElementById('formAppTech').value.split(',').map(s => s.trim()).filter(Boolean),
+                description: document.getElementById('formAppDesc').value.trim()
+            };
+
+            if (id) {
+                // Update
+                const index = listings.findIndex(l => l.id == id);
+                if (index > -1) listings[index] = { ...listings[index], ...data };
+            } else {
+                // Create
+                const nextId = Math.max(...listings.map(l => l.id), 0) + 1;
+                listings.push({ id: nextId, featured: false, ...data });
+            }
+
+            saveListings();
+            populateFilters();
+            renderListings();
+            renderAdminRows();
+            closeAppForm();
+            showToast(id ? 'App updated successfully.' : 'App created successfully.');
+        }
+
+        function deleteListing(id) {
+            if (!confirm('Are you sure you want to delete this app? This cannot be undone.')) return;
+            listings = listings.filter(l => l.id !== id);
+            saveListings();
+            populateFilters();
+            renderListings();
+            renderAdminRows();
+            showToast('App deleted.');
+        }
+
+        function updateListingUrl(id, newUrl) {
+            const l = getListingById(id);
+            if (l && l.current_url !== newUrl) {
+                l.current_url = newUrl;
+                saveListings();
+                renderListings(); // Update main grid immediately
+                // Update the small helper text in admin panel
+                renderAdminRows();
+                showToast('URL updated.');
+            }
+        }
+
+        // --- UI Bindings ---
+        document.getElementById('searchInput').addEventListener('input', (e) => { currentFilter.search = e.target.value; renderListings(); });
+        document.getElementById('industryFilter').addEventListener('change', (e) => { currentFilter.industry = e.target.value; renderListings(); });
+        document.getElementById('typeFilter').addEventListener('change', (e) => { currentFilter.type = e.target.value; renderListings(); });
+        document.getElementById('sortSelect').addEventListener('change', (e) => { currentFilter.sort = e.target.value; renderListings(); });
+        document.getElementById('adminSearch').addEventListener('input', renderAdminRows);
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('translate-x-full');
+            document.getElementById('cartOverlay').classList.toggle('hidden');
+        }
+        
+        function addToCart(id) {
+            if (!cart.includes(id)) { cart.push(id); saveCart(); }
+            const btn = event.target.closest('button');
+            if (btn) {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => { btn.innerHTML = original; btn.classList.remove('bg-green-600'); }, 1200);
+            }
+        }
+        
+        function removeFromCart(id) { cart = cart.filter(cid => cid !== id); saveCart(); }
+        function clearCart() { cart = []; saveCart(); }
+        
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            if (cart.length > 0) { badge.textContent = cart.length; badge.classList.remove('hidden'); }
+            else badge.classList.add('hidden');
+            cartTotal.textContent = cart.length;
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<div class="text-center py-12 text-gray-400"><i class="fas fa-shopping-cart text-4xl mb-3"></i><p>Your inquiry cart is empty.</p><p class="text-sm mt-1">Add prototypes to start a conversation.</p></div>`;
+                return;
+            }
+            cartItems.innerHTML = cart.map(id => {
+                const l = getListingById(id); if (!l) return '';
+                return `<div class="flex items-start justify-between bg-gray-50 rounded-lg p-3">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-gray-900 truncate">${escapeHtml(l.title)}</p>
+                        <p class="text-xs text-gray-500">${escapeHtml(l.industry)} • ${escapeHtml(l.type)}</p>
+                        <p class="text-xs text-amber-600 mt-1">Price negotiable; let's talk</p>
+                    </div>
+                    <button onclick="removeFromCart(${l.id})" class="ml-2 text-gray-400 hover:text-red-500 transition"><i class="fas fa-trash-alt text-sm"></i></button>
+                </div>`;
+            }).join('');
+        }
+
+        function openDetail(id) {
+            const l = getListingById(id);
+            const hasUrl = l.current_url && l.current_url.trim();
+            document.getElementById('detailTitle').textContent = l.title;
+            document.getElementById('detailBody').innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">${escapeHtml(l.industry)}</span>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-xs text-gray-500">${escapeHtml(l.type)}</span>
+                    </div>
+                    <p class="text-gray-700">${escapeHtml(l.description)}</p>
+                    <div><h4 class="text-sm font-semibold text-gray-900 mb-2">Tech Stack</h4><div class="flex flex-wrap gap-1">${(l.tech_stack || []).map(t => `<span class="tag text-sm">${escapeHtml(t)}</span>`).join('')}</div></div>
+                    <div class="flex items-center text-sm text-gray-500"><i class="far fa-clock mr-1"></i> Estimated build: ${l.weeks} weeks</div>
+                    ${hasUrl ? `<div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600 font-mono break-all"><strong class="text-gray-800">Live URL:</strong> ${escapeHtml(l.current_url)}</div>` : ''}
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800"><i class="fas fa-tag mr-1"></i> <strong>Price negotiable; let's talk</strong> — we scope based on your needs.</div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="addToCart(${l.id});closeDetail();" class="flex-1 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-plus mr-2"></i> Add to Inquiry</button>
+                        ${hasUrl ? `<button onclick="launchApp(${l.id});closeDetail();" class="btn-launch flex-1 py-3 font-semibold rounded-lg"><i class="fas fa-external-link-alt mr-2"></i> Take Me to the App</button>` : ''}
+                    </div>
+                </div>`;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+        function closeDetail() { document.getElementById('detailModal').classList.add('hidden'); }
+
+        function openAdminPanel() {
+            if (!isAdmin()) return alert('Admin access required.');
+            adminModalOpen = true;
+            document.getElementById('adminSearch').value = '';
+            renderAdminRows();
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeAdminPanel() {
+            adminModalOpen = false;
+            document.getElementById('adminModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        function saveAllUrls() {
+            // Already saved immediately via onblur, but good to have a visual button
+            showToast('All changes saved.');
+            renderListings();
+            renderAdminRows();
+        }
+
+        function launchApp(id) {
+            const l = getListingById(id);
+            if (!l || !l.current_url) return;
+            document.getElementById('appViewerTitle').textContent = l.title;
+            document.getElementById('appViewerUrl').textContent = l.current_url;
+            document.getElementById('appIframe').src = l.current_url;
+            document.getElementById('appViewer').classList.add('active');
+            history.pushState({ appViewer: true }, '', '#app-viewer');
+        }
+        function closeAppViewer() {
+            document.getElementById('appViewer').classList.remove('active');
+            document.getElementById('appIframe').src = 'about:blank';
+            if (history.state && history.state.appViewer) history.back();
+        }
+        function reloadAppViewer() {
+            const iframe = document.getElementById('appIframe');
+            if (iframe.src && iframe.src !== 'about:blank') iframe.src = iframe.src;
+        }
+
+        function openGoogleSignIn() {
+            const accountsDiv = document.getElementById('googleAccounts');
+            const demoAccounts = [
+                { email: 'cuthbert@oecstrading.com', name: 'Cuthbert John', avatar: 'C' },
+                { email: 'viewer@gmail.com', name: 'Demo Viewer', avatar: 'D' }
+            ];
+            accountsDiv.innerHTML = demoAccounts.map(acc => `
+                <button onclick="signInWithGoogle('${acc.email}', '${acc.name}')" class="w-full flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg border border-gray-200 transition text-left">
+                    <div class="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">${acc.avatar}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-medium text-gray-900">${acc.name}</div>
+                        <div class="text-xs text-gray-500 truncate">${acc.email}</div>
+                    </div>
+                </button>
+            `).join('');
+            document.getElementById('googleModal').classList.remove('hidden');
+            document.getElementById('manualEmail').value = '';
+        }
+        function closeGoogleModal() { document.getElementById('googleModal').classList.add('hidden'); }
+        function submitManualEmail() {
+            const email = document.getElementById('manualEmail').value.trim();
+            if (!email) return;
+            const name = email.split('@')[0];
+            signInWithGoogle(email, name);
+        }
+        function signInWithGoogle(email, name) {
+            currentUser = { email, name };
+            localStorage.setItem('saasUser', JSON.stringify(currentUser));
+            closeGoogleModal();
+            updateAuthUI();
+            renderListings();
+            if (isAdmin()) setTimeout(() => openAdminPanel(), 200);
+        }
+        function signOut() {
+            if (!confirm('Sign out?')) return;
+            currentUser = null;
+            localStorage.removeItem('saasUser');
+            updateAuthUI();
+            renderListings();
+            closeAdminPanel();
+        }
+        function updateAuthUI() {
+            const signInBtn = document.getElementById('googleSignInBtn');
+            const userMenu = document.getElementById('userMenu');
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser) {
+                signInBtn.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                userMenu.classList.add('flex');
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+                document.getElementById('userAvatar').textContent = (currentUser.name || currentUser.email).charAt(0).toUpperCase();
+                if (isAdmin()) { adminBtn.classList.remove('hidden'); adminBtn.classList.add('inline-flex'); }
+            } else {
+                signInBtn.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+                userMenu.classList.remove('flex');
+                adminBtn.classList.add('hidden');
+                adminBtn.classList.remove('inline-flex');
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                if (document.getElementById('googleModal').classList.contains('hidden') === false) return closeGoogleModal();
+                if (document.getElementById('appFormModal').classList.contains('active')) return closeAppForm();
+                if (adminModalOpen) return closeAdminPanel();
+                if (document.getElementById('appViewer').classList.contains('active')) return closeAppViewer();
+                if (!document.getElementById('detailModal').classList.contains('hidden')) return closeDetail();
+                if (!document.getElementById('cartDrawer').classList.contains('translate-x-full')) return toggleCart();
+            }
+        });
+
+        function showToast(message) {
+            let toast = document.getElementById('saasToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'saasToast';
+                toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1F2937;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 10px 40px rgba(0,0,0,0.25);z-index:200;opacity:0;transition:opacity .3s, transform .3s;pointer-events:none;';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(10px)';
+            }, 2800);
+        }
+
+        function init() {
+            populateFilters();
+            renderListings();
+            updateCartUI();
+            updateAuthUI();
+        }
+        init();
+
+        window.addEventListener('popstate', function() {
+            if (document.getElementById('appViewer').classList.contains('active')) closeAppViewer();
+        });
+    </script>
+</body>
+</html>
