@@ -1,0 +1,271 @@
+[
+  {
+    "label": "Search app URLs",
+    "value": ""
+  },
+  {
+    "label": "URL for Project Management Information System (PMIS)",
+    "value": "https://infrastructure-pmis.lovable.app/",
+    "status": 200,
+    "title": "PMIS | Infrastructure Project Management",
+    "bytes": 2698,
+    "final_url": "https://pmisforbanks.com/"
+  },
+  {
+    "label": "URL for FaMaaS - Fixed Assets Management",
+    "value": "https://fixed-assets-management-system.lovable.app/",
+    "status": 200,
+    "title": "Lovable App",
+    "bytes": 1860,
+    "final_url": "https://fixed-assets-management-system.lovable.app/"
+  },
+  {
+    "label": "URL for BetterBooks Caribbean for QuickBooks",
+    "value": "https://counter-to-ledger.lovable.app/",
+    "status": 200,
+    "title": "Better Books Caribbean",
+    "bytes": 2773,
+    "final_url": "https://counter-to-ledger.lovable.app/"
+  },
+  {
+    "label": "URL for EcoChill Proposa-Link",
+    "value": "https://ecochill-proposa-link.lovable.app/",
+    "status": 200,
+    "title": "EcoChill Proposa-Link \u2014 Refrigeration &amp; Microgrid Proposal Portal",
+    "bytes": 15635,
+    "final_url": "https://ecochill-proposa-link.lovable.app/"
+  },
+  {
+    "label": "URL for Belize Blue Economy MRV MIS",
+    "value": "https://belize-blue-economy-mis.lovable.app/",
+    "status": 200,
+    "title": "Belize Blue Economy MRV \u2014 BBFP Management Information System",
+    "bytes": 24108,
+    "final_url": "https://belize-blue-economy-mis.lovable.app/"
+  },
+  {
+    "label": "URL for Caribbean Finance Hub",
+    "value": "https://carib-glide.lovable.app/",
+    "status": 200,
+    "title": "Performance Dashboard | Caribbean Micro-Lending Risk Engine",
+    "bytes": 19513,
+    "final_url": "https://carib-glide.lovable.app/"
+  },
+  {
+    "label": "URL for Easy Sales Cloud",
+    "value": "https://easy-sales-cloud.lovable.app/",
+    "status": 200,
+    "title": "JACS Financials \u2014 AI Point of Sale",
+    "bytes": 2837,
+    "final_url": "https://easy-sales-cloud.lovable.app/"
+  },
+  {
+    "label": "URL for VAT Reporter AI",
+    "value": "https://vatreporter-ai.lovable.app/",
+    "status": 200,
+    "title": "Lovable App",
+    "bytes": 2754,
+    "final_url": "https://vatreporter-ai.lovable.app/"
+  },
+  {
+    "label": "URL for Gender and Climate Finance Tagging Platform",
+    "value": "https://mrv-gcft-platform.lovable.app/",
+    "status": 200,
+    "title": "GCFT Portal \u2014 Climate Finance MRV",
+    "bytes": 5296,
+    "final_url": "https://gcftportal.org/"
+  },
+  {
+    "label": "URL for Dominica DOMCREP M&E MIS",
+    "value": "https://dominica-crep-me-mis-system.lovable.app/",
+    "status": 200,
+    "title": "DOMCREP M&amp;E MIS \u00b7 Dominica Community Resilience",
+    "bytes": 4201,
+    "final_url": "https://dominica-crep-me-mis-system.lovable.app/"
+  },
+  {
+    "label": "URL for Grenada UBEC Blue Economy M&E",
+    "value": "https://grenada-ubec-me-project.lovable.app/",
+    "status": 200,
+    "title": "UBEC M&amp;E MIS \u00b7 Grenada Blue Economy",
+    "bytes": 3999,
+    "final_url": "https://grenada-ubec-me-project.lovable.app/"
+  },
+  {
+    "label": "URL for OECS AI Institute Platform",
+    "value": "https://www.theoecsaiinstitute.com/",
+    "status": 200,
+    "title": "OECS AI Institute - Virtual Business Incubator | AI Innovation in the Caribbean",
+    "bytes": 2638,
+    "final_url": "https://www.theoecsaiinstitute.com/"
+  },
+  {
+    "label": "URL for Close Command Hub",
+    "value": "https://close-command-hub.lovable.app/",
+    "status": 200,
+    "title": "Foundry Connects SaaS Close Command Deck",
+    "bytes": 29917,
+    "final_url": "https://close-command-hub.lovable.app/"
+  },
+  {
+    "label": "URL for Executive Portfolio Hub",
+    "value": "https://wealth-compass-hub-06.lovable.app/",
+    "status": 200,
+    "title": "Meridian \u2014 Multi-Entity Wealth Dashboard",
+    "bytes": 83121,
+    "final_url": "https://wealth-compass-hub-06.lovable.app/"
+  },
+  {
+    "label": "URL for QuickBooks Utility Tools",
+    "value": "https://quickbooks-utility-tools.lovable.app/",
+    "status": 200,
+    "title": "QuickBooks Cleanup Tool \u2014 Bulk Chart of Accounts Editor for QuickBooks Desktop",
+    "bytes": 2955,
+    "final_url": "https://quickbooks-utility-tools.lovable.app/"
+  },
+  {
+    "label": "URL for JACS Restaurant Management",
+    "value": "https://jacs-restaurant-pos-system.lovable.app/",
+    "status": 200,
+    "title": "JAMROCK Restaurant POS",
+    "bytes": 1942,
+    "final_url": "https://jacs-restaurant-pos-system.lovable.app/"
+  },
+  {
+    "label": "URL for E-Testing Driver's License",
+    "value": "https://oecs-drivers-license-testing-platform.lovable.app/",
+    "status": 200,
+    "title": "OECS E-Testing | Driver's License Examination Platform",
+    "bytes": 2352,
+    "final_url": "https://oecs-drivers-license-testing-platform.lovable.app/"
+  },
+  {
+    "label": "URL for eLandSaintLucia",
+    "value": "https://elris-sids-ni7czn5h.manus.space/",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "label": "URL for JACS Hospice Management Platform",
+    "value": "https://jacs-enterprise-medical.lovable.app",
+    "status": 200,
+    "title": "JACS Medical",
+    "bytes": 2640,
+    "final_url": "https://jacs-enterprise-medical.lovable.app"
+  },
+  {
+    "label": "URL for BetterBooks Caribbean Marketing Page",
+    "value": "https://better-books-marketing-page.lovable.app/",
+    "status": 200,
+    "title": "Lovable App",
+    "bytes": 2475,
+    "final_url": "https://better-books-marketing-page.lovable.app/"
+  },
+  {
+    "label": "URL for TV & Radio Financial Management System",
+    "value": "#"
+  },
+  {
+    "label": "URL for Antillia Platform",
+    "value": "https://www.antillia.online/",
+    "status": 200,
+    "title": "Caribbean Property for Sale | Verified Luxury Real Estate \u2014 Antillia",
+    "bytes": 56006,
+    "final_url": "https://antillia.online/"
+  },
+  {
+    "label": "URL for MLS Real Estate Marketplace",
+    "value": "https://oecsrealestatemarketplace.com/",
+    "status": 200,
+    "title": "OECS Marketplace \u2014 Caribbean Assets for Sale & Rent",
+    "bytes": 2559,
+    "final_url": "https://oecsrealestatemarketplace.com/"
+  },
+  {
+    "label": "URL for OECS Realtors Platform",
+    "value": "https://oecs-realtors-platform.lovable.app/",
+    "status": 200,
+    "title": "OECS Marketplace \u2014 Caribbean Assets for Sale & Rent",
+    "bytes": 2559,
+    "final_url": "https://oecs-realtors-platform.lovable.app/"
+  },
+  {
+    "label": "URL for Wheels Works Auto Shop",
+    "value": "https://wheels-works.lovable.app/",
+    "status": 200,
+    "title": "Smiley Tinting Plus | Tinting booking demo",
+    "bytes": 2607,
+    "final_url": "https://wheels-works.lovable.app/"
+  },
+  {
+    "label": "URL for OECS Trading Platform",
+    "value": "https://oecstrading.com/",
+    "status": 200,
+    "title": "OCES Trading | Connecting People, Growing Businesses",
+    "bytes": 3576,
+    "final_url": "https://oecstrading.com/"
+  },
+  {
+    "label": "URL for AI Financial Statement Generator \u2014 Audit Platform",
+    "value": "https://oecstrading.github.io/AI-Financial-Auditor-with-DeepSeek-/",
+    "status": 200,
+    "title": "Audit Studio \u00b7 Complete Platform",
+    "bytes": 200707,
+    "final_url": "https://oecstrading.github.io/AI-Financial-Auditor-with-DeepSeek-/"
+  },
+  {
+    "label": "URL for Audit Studio \u2014 AI-Powered Audit Platform",
+    "value": "https://oecstrading.github.io/AI-Financial-Auditor-with-DeepSeek-/",
+    "status": 200,
+    "title": "Audit Studio \u00b7 Complete Platform",
+    "bytes": 200707,
+    "final_url": "https://oecstrading.github.io/AI-Financial-Auditor-with-DeepSeek-/"
+  },
+  {
+    "label": "URL for Caribbean Micro-Lending Enterprise Matrix",
+    "value": "#"
+  },
+  {
+    "label": "URL for JACS Payroll \u2014 Caribbean-Compliant Payroll for QuickBooks",
+    "value": "#"
+  },
+  {
+    "label": "URL for Smiley's Tinting Plus \u2014 Business & Inspection Hub",
+    "value": "#"
+  },
+  {
+    "label": "URL for Biogas Haiti \u2014 Industrial Division (1,000 m\u00b3)",
+    "value": "#"
+  },
+  {
+    "label": "URL for Biogas St. Lucia \u2014 Northern Pilot (Gros Islet)",
+    "value": "#"
+  },
+  {
+    "label": "URL for Biogas St. Lucia \u2014 Vieux Fort Pilot",
+    "value": "#"
+  },
+  {
+    "label": "URL for Caribbean Gas Intelligence \u2014 dMRV Monitoring System",
+    "value": "#"
+  },
+  {
+    "label": "URL for COSMOS Biogas Haiti \u2014 Filling Station Pilot",
+    "value": "#"
+  },
+  {
+    "label": "URL for BiogasSTLucia \u2014 GCF/CDB Concept Note",
+    "value": "#"
+  },
+  {
+    "label": "URL for CaribCarbon \u2014 Caribbean Climate Asset Marketplace",
+    "value": "#"
+  },
+  {
+    "label": "URL for The AI AML/CFT Compliance Auditor \u2014 Standalone",
+    "value": "#"
+  },
+  {
+    "label": "URL for Antillia Skills Bank \u2014 Verified Professionals",
+    "value": "#"
+  }
+]

@@ -1,0 +1,242 @@
+[
+  {
+    "label": "URL for Project Management Information System (PMIS)",
+    "script": "https://pmisforbanks.com/assets/index-D3kemOnG.js",
+    "bytes": 4954617,
+    "storage": 22,
+    "fetch": 27,
+    "supabase": true,
+    "demo": 71,
+    "mock": 4
+  },
+  {
+    "label": "URL for FaMaaS - Fixed Assets Management",
+    "script": "https://fixed-assets-management-system.lovable.app/assets/index-DuacmWNm.js",
+    "bytes": 3456476,
+    "storage": 31,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 164,
+    "mock": 0
+  },
+  {
+    "label": "URL for BetterBooks Caribbean for QuickBooks",
+    "script": "https://counter-to-ledger.lovable.app/assets/index-BRBBAjoD.js",
+    "bytes": 3107775,
+    "storage": 49,
+    "fetch": 17,
+    "supabase": true,
+    "demo": 37,
+    "mock": 0
+  },
+  {
+    "label": "URL for EcoChill Proposa-Link",
+    "script": "https://ecochill-proposa-link.lovable.app/assets/index-BWsmoMg7.js",
+    "bytes": 345231,
+    "storage": 0,
+    "fetch": 5,
+    "supabase": false,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Belize Blue Economy MRV MIS",
+    "script": "https://belize-blue-economy-mis.lovable.app/assets/index-Bt88Mlup.js",
+    "bytes": 576165,
+    "storage": 7,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Caribbean Finance Hub",
+    "script": "https://carib-glide.lovable.app/assets/index-B8uxmR5M.js",
+    "bytes": 614767,
+    "storage": 11,
+    "fetch": 19,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Easy Sales Cloud",
+    "script": "https://easy-sales-cloud.lovable.app/assets/index-DNfr8uOX.js",
+    "bytes": 1066625,
+    "storage": 20,
+    "fetch": 15,
+    "supabase": true,
+    "demo": 26,
+    "mock": 0
+  },
+  {
+    "label": "URL for VAT Reporter AI",
+    "script": "https://vatreporter-ai.lovable.app/assets/index--wpEri5_.js",
+    "bytes": 1666646,
+    "storage": 26,
+    "fetch": 22,
+    "supabase": true,
+    "demo": 16,
+    "mock": 0
+  },
+  {
+    "label": "URL for Gender and Climate Finance Tagging Platform",
+    "script": "https://gcftportal.org/assets/index-BvlwZJUh.js",
+    "bytes": 704603,
+    "storage": 17,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 22,
+    "mock": 2
+  },
+  {
+    "label": "URL for Dominica DOMCREP M&E MIS",
+    "script": "https://dominica-crep-me-mis-system.lovable.app/assets/index-CX9cM81w.js",
+    "bytes": 550357,
+    "storage": 7,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Grenada UBEC Blue Economy M&E",
+    "script": "https://grenada-ubec-me-project.lovable.app/assets/index-Bqk10IT_.js",
+    "bytes": 550224,
+    "storage": 7,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for OECS AI Institute Platform",
+    "script": "https://www.theoecsaiinstitute.com/assets/index-byJhKElT.js",
+    "bytes": 745880,
+    "storage": 11,
+    "fetch": 19,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Close Command Hub",
+    "script": "https://close-command-hub.lovable.app/assets/index-Hhm3KNYh.js",
+    "bytes": 585137,
+    "storage": 7,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Executive Portfolio Hub",
+    "script": "https://wealth-compass-hub-06.lovable.app/assets/index-DLsNNPcV.js",
+    "bytes": 338515,
+    "storage": 0,
+    "fetch": 5,
+    "supabase": false,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for QuickBooks Utility Tools",
+    "script": "https://quickbooks-utility-tools.lovable.app/assets/index-C4J7dC02.js",
+    "bytes": 1831271,
+    "storage": 26,
+    "fetch": 18,
+    "supabase": true,
+    "demo": 2,
+    "mock": 0
+  },
+  {
+    "label": "URL for JACS Restaurant Management",
+    "script": "https://jacs-restaurant-pos-system.lovable.app/assets/index-CJxJyQGS.js",
+    "bytes": 2999984,
+    "storage": 15,
+    "fetch": 21,
+    "supabase": true,
+    "demo": 12,
+    "mock": 0
+  },
+  {
+    "label": "URL for E-Testing Driver's License",
+    "script": "https://oecs-drivers-license-testing-platform.lovable.app/assets/index-BQQsluQ8.js",
+    "bytes": 3578080,
+    "storage": 51,
+    "fetch": 20,
+    "supabase": true,
+    "demo": 75,
+    "mock": 2
+  },
+  {
+    "label": "URL for JACS Hospice Management Platform",
+    "script": "https://jacs-enterprise-medical.lovable.app/assets/index-CS3KsWcO.js",
+    "bytes": 4272651,
+    "storage": 32,
+    "fetch": 31,
+    "supabase": true,
+    "demo": 73,
+    "mock": 0
+  },
+  {
+    "label": "URL for BetterBooks Caribbean Marketing Page",
+    "script": "https://better-books-marketing-page.lovable.app/assets/index-CJGaJ3wU.js",
+    "bytes": 304151,
+    "storage": 2,
+    "fetch": 6,
+    "supabase": false,
+    "demo": 0,
+    "mock": 0
+  },
+  {
+    "label": "URL for Antillia Platform",
+    "script": "https://antillia.online/assets/index-BX2_jOFy.js",
+    "bytes": 884201,
+    "storage": 22,
+    "fetch": 18,
+    "supabase": true,
+    "demo": 9,
+    "mock": 0
+  },
+  {
+    "label": "URL for MLS Real Estate Marketplace",
+    "script": "https://oecsrealestatemarketplace.com/assets/index-DQ5hfOGF.js",
+    "bytes": 3282601,
+    "storage": 15,
+    "fetch": 28,
+    "supabase": true,
+    "demo": 21,
+    "mock": 1
+  },
+  {
+    "label": "URL for OECS Realtors Platform",
+    "script": "https://oecs-realtors-platform.lovable.app/assets/index-DQ5hfOGF.js",
+    "bytes": 3282601,
+    "storage": 15,
+    "fetch": 28,
+    "supabase": true,
+    "demo": 21,
+    "mock": 1
+  },
+  {
+    "label": "URL for Wheels Works Auto Shop",
+    "script": "https://wheels-works.lovable.app/assets/index-ADYcmWEa.js",
+    "bytes": 2344023,
+    "storage": 16,
+    "fetch": 22,
+    "supabase": true,
+    "demo": 59,
+    "mock": 0
+  },
+  {
+    "label": "URL for OECS Trading Platform",
+    "script": "https://oecstrading.com/assets/index-CfhYuwmw.js",
+    "bytes": 1005430,
+    "storage": 20,
+    "fetch": 14,
+    "supabase": true,
+    "demo": 1,
+    "mock": 0
+  }
+]
