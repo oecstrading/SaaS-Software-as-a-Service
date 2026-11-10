@@ -25,3 +25,7 @@
 - No underlying app backend, schema, tax engine or third-party deployment was modified.
 
 Five additional listings (43–47) were discovered in the authenticated browser’s old portfolio admin display after the first publication. They were recovered into the published catalogue and individually screened. Four returned HTTP 200; the fifth returned 403.
+
+## JACS public-preview follow-up
+
+The user supplied the now-public JACS URL. A separate unauthenticated browser opened the PUBLIC PREVIEW and successfully navigated to Products. It displayed an empty catalogue and a notice that checkout, editing, deleting and syncing require sign-in. Listing 47 is now Public read-only preview with its launch enabled. Counts are now 37 public launch listings, nine unavailable exact editions and one restricted listing (eLand). Read-only backend enforcement and live business workflows were not tested. Earlier HTTP 403 results are retained as historical observations.

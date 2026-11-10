@@ -264,5 +264,12 @@
     "final_url": "https://www.theoecsaiinstitute.com/",
     "title": "OECS AI Institute - Virtual Business Incubator | AI Innovation in the Caribbean",
     "sha256": "38d522503111713bb7861c4499af8b70220ade3e6a40c2c35ad812eb985036cc"
+  },
+  {
+    "url": "https://posaiagent-mcc3gipd.manus.space/",
+    "status": 200,
+    "final_url": "https://posaiagent-mcc3gipd.manus.space/",
+    "title": "JACS Financials",
+    "sha256": "7e721f8092cc18b89580002caa77cc26f9af948ce81da8ed21730b33d71b0e29"
   }
 ]

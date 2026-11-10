@@ -6,7 +6,7 @@ Reviewed 10 November 2026. Scope: 42 original GitHub marketplace listings plus f
 
 The portfolio contains potentially useful business applications, demonstrators, marketing websites and feasibility documents. It cannot responsibly be described as 47 independently verified production SaaS products. Fifteen original /apps/ launch paths returned 404. The other 27 original routes served the company web-app shell; the company portfolio supplied the actual destinations.
 
-There are 36 matching public launch destinations, nine exact editions not recovered and two access-restricted destinations. Existing listing names are retained for traceability, including original compliance claims in names; names are not endorsements. No production-readiness certification is given.
+There are 37 matching public launch destinations, nine exact editions not recovered and one access-restricted destination. Existing listing names are retained for traceability, including original compliance claims in names; names are not endorsements. No production-readiness certification is given.
 
 ## Scope and evidence
 
@@ -772,17 +772,19 @@ Current destination: [https://qb-bridge-ai-buddy.lovable.app/](https://qb-bridge
 
 ### 47. JACS Financial Management System with POS and QB Integration
 
-Status: **Access restricted**. Review scope: HTTP access check only.
+Status: **Public read-only preview**. Review scope: Unauthenticated browser preview and catalogue navigation verified.
 
 **Business value:** Could combine POS operations and bookkeeping in one workflow.
 
-**Observed:** The saved Manus destination returned HTTP 403 during the automated check. A related JACS POS source exists, but exact deployment/version matching was not established.
+**Observed:** An unauthenticated browser opened the JACS Financials PUBLIC PREVIEW. Overview, About, Products and Categories navigation are available. Browse product catalog opened the public catalogue; it displayed no matching products at the time of review. The page states that checkout, editing, deleting and syncing require sign-in.
 
-**Gap:** Restricted access prevents assessing the live app; a related repository is not evidence of this deployment’s current functionality.
+**Gap:** Public preview access is verified. The notice and visible controls do not prove backend authorization for every business action. Live POS transactions, inventory changes, QuickBooks posting and tenant isolation remain untested.
 
-**Acceptance test:** Provide authorized test access and complete a synthetic sale, refund, stock update and duplicate-safe QuickBooks sandbox posting.
+**Acceptance test:** Verify anonymous requests cannot mutate business records, then complete a synthetic sale, refund, inventory update and duplicate-safe QuickBooks sandbox posting under authorized test roles.
 
-**Commercial route:** Arrange a controlled demonstration; keep public launch withheld until verified.
+**Commercial route:** Public read-only demonstration is available; arrange an authorized operational pilot before production claims.
+
+Current destination: [https://posaiagent-mcc3gipd.manus.space/](https://posaiagent-mcc3gipd.manus.space/)
 
 ## Evidence files
 

@@ -925,18 +925,18 @@ window.OECS_CATALOG = [
     "industry": "Accounting & Finance",
     "type": "POS and bookkeeping",
     "value": "Could combine POS operations and bookkeeping in one workflow.",
-    "evidence": "The saved Manus destination returned HTTP 403 during the automated check. A related JACS POS source exists, but exact deployment/version matching was not established.",
-    "gap": "Restricted access prevents assessing the live app; a related repository is not evidence of this deployment’s current functionality.",
-    "acceptance": "Provide authorized test access and complete a synthetic sale, refund, stock update and duplicate-safe QuickBooks sandbox posting.",
-    "commercial": "Arrange a controlled demonstration; keep public launch withheld until verified.",
+    "evidence": "An unauthenticated browser opened the JACS Financials PUBLIC PREVIEW. Overview, About, Products and Categories navigation are available. Browse product catalog opened the public catalogue; it displayed no matching products at the time of review. The page states that checkout, editing, deleting and syncing require sign-in.",
+    "gap": "Public preview access is verified. The notice and visible controls do not prove backend authorization for every business action. Live POS transactions, inventory changes, QuickBooks posting and tenant isolation remain untested.",
+    "acceptance": "Verify anonymous requests cannot mutate business records, then complete a synthetic sale, refund, inventory update and duplicate-safe QuickBooks sandbox posting under authorized test roles.",
+    "commercial": "Public read-only demonstration is available; arrange an authorized operational pilot before production claims.",
     "reviewed_on": "2026-11-10",
     "original_url": "https://posaiagent-mcc3gipd.manus.space/",
-    "url": null,
+    "url": "https://posaiagent-mcc3gipd.manus.space/",
     "related_url": null,
     "source_url": null,
-    "status": "Access restricted",
-    "review_level": "HTTP access check only",
-    "priority": "Recover source",
-    "launch_label": "Open application"
+    "status": "Public read-only preview",
+    "review_level": "Unauthenticated browser preview and catalogue navigation verified",
+    "priority": "Validate pilot",
+    "launch_label": "Open read-only preview"
   }
 ];

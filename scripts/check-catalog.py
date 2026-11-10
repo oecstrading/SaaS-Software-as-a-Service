@@ -9,12 +9,12 @@ for a in apps:
   assert not a[k] or a[k].startswith('https://'),(a['id'],k)
  assert not a['url'] or not a['url'].startswith('/apps/')
  assert not a['url'] or a['status'] not in ['Demo on request','Access restricted']
-assert sum(bool(a['url']) for a in apps)==36
+assert sum(bool(a['url']) for a in apps)==37
 assert sum(a['status']=='Demo tested' for a in apps)==2
 assert sum(a['status']=='Demo on request' for a in apps)==9
-assert sum(a['status']=='Access restricted' for a in apps)==2
+assert sum(a['status']=='Access restricted' for a in apps)==1
 assert (root/'catalog-data.js').read_text()=='window.OECS_CATALOG = '+json.dumps(apps,indent=2,ensure_ascii=False)+';\n'
-print('PASS: 47 unique assessments, 36 public launches, safe URLs, 9 unavailable editions, 2 restricted and synchronized browser data.')
+print('PASS: 47 unique assessments, 37 public launches, safe URLs, 9 unavailable editions, 1 restricted and synchronized browser data.')
 if '--http' in sys.argv:
  urls=sorted({a[k] for a in apps for k in ['url','related_url'] if a[k]})
  def check(u):
