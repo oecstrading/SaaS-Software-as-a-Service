@@ -1,20 +1,20 @@
 """Check catalogue invariants and optionally GET every current/related destination."""
 import json,pathlib,urllib.request,concurrent.futures,sys,re,hashlib
 root=pathlib.Path(__file__).resolve().parents[1];apps=json.loads((root/'catalog.json').read_text())
-assert len(apps)==42 and sorted(a['id'] for a in apps)==list(range(1,43))
-assert len({a['title'] for a in apps})==42
+assert len(apps)==47 and sorted(a['id'] for a in apps)==list(range(1,48))
+assert len({a['title'] for a in apps})==47
 for a in apps:
  for k in ['title','value','evidence','gap','acceptance','commercial','review_level','status']:assert a[k].strip(),(a['id'],k)
  for k in ['url','source_url','related_url']:
   assert not a[k] or a[k].startswith('https://'),(a['id'],k)
  assert not a['url'] or not a['url'].startswith('/apps/')
  assert not a['url'] or a['status'] not in ['Demo on request','Access restricted']
-assert sum(bool(a['url']) for a in apps)==32
+assert sum(bool(a['url']) for a in apps)==36
 assert sum(a['status']=='Demo tested' for a in apps)==2
 assert sum(a['status']=='Demo on request' for a in apps)==9
-assert sum(a['status']=='Access restricted' for a in apps)==1
+assert sum(a['status']=='Access restricted' for a in apps)==2
 assert (root/'catalog-data.js').read_text()=='window.OECS_CATALOG = '+json.dumps(apps,indent=2,ensure_ascii=False)+';\n'
-print('PASS: 42 unique assessments, 32 public launches, safe URLs, 9 unavailable editions, 1 restricted and synchronized browser data.')
+print('PASS: 47 unique assessments, 36 public launches, safe URLs, 9 unavailable editions, 2 restricted and synchronized browser data.')
 if '--http' in sys.argv:
  urls=sorted({a[k] for a in apps for k in ['url','related_url'] if a[k]})
  def check(u):

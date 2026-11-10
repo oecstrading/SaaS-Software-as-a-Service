@@ -2,10 +2,10 @@
 
 ## Passed
 
-- Data invariants: 42 unique IDs and complete individual assessments; generated browser data matches catalog.json.
+- Data invariants: 47 unique IDs and complete individual assessments; generated browser data matches catalog.json.
 - JavaScript syntax: app.js and catalog-data.js passed `node --check`.
-- Destination check: all 34 unique launch/related-material URLs responded HTTP 200 at the final check. There are 32 per-listing public launch destinations, nine unavailable exact editions and one restricted edition.
-- Browser preview: all 42 direct assessment routes displayed their corresponding app titles. An unavailable edition offered an app-specific email draft instead of a broken launch.
+- Destination check: all 38 unique launch/related-material URLs responded HTTP 200 at the final check. There are 36 per-listing public launch destinations, nine unavailable exact editions and two restricted editions.
+- Browser preview: all 42 original direct assessment routes displayed their corresponding app titles. An unavailable edition offered an app-specific email draft instead of a broken launch.
 - Search: a QuickBooks Utility query narrowed results to one; a nonsense query displayed the empty state. Reset restored 42 offerings.
 - Status filter: Demo tested narrowed results to two.
 - Shortlist: adding an offering updated the saved state and produced an email draft containing its name and review status. No email was sent.
@@ -23,3 +23,5 @@
 - Historical root-absolute `https://oecstrading.github.io/apps/...` URLs belong outside this repository's Pages prefix and cannot be repaired by this repository alone. Current catalogue links no longer use them. Compatibility pages support the correct `/SaaS-Software-as-a-Service/apps/...` prefix.
 - Email inquiry depends on a configured email application. It is labelled as a draft; there is no server-side submission or delivery claim.
 - No underlying app backend, schema, tax engine or third-party deployment was modified.
+
+Five additional listings (43–47) were discovered in the authenticated browser’s old portfolio admin display after the first publication. They were recovered into the published catalogue and individually screened. Four returned HTTP 200; the fifth returned 403.

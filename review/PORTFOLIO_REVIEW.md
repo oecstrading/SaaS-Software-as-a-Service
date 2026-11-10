@@ -1,12 +1,12 @@
 # OECS Software Portfolio Review
 
-Reviewed 10 November 2026. Scope: all 42 original GitHub marketplace listings.
+Reviewed 10 November 2026. Scope: 42 original GitHub marketplace listings plus five browser-saved additions (47 total).
 
 ## Executive finding
 
-The portfolio contains potentially useful business applications, demonstrators, marketing websites and feasibility documents. It cannot responsibly be described as 42 independently verified production SaaS products. Fifteen original /apps/ launch paths returned 404. The other 27 original routes served the company web-app shell; the company portfolio supplied the actual destinations.
+The portfolio contains potentially useful business applications, demonstrators, marketing websites and feasibility documents. It cannot responsibly be described as 47 independently verified production SaaS products. Fifteen original /apps/ launch paths returned 404. The other 27 original routes served the company web-app shell; the company portfolio supplied the actual destinations.
 
-There are 32 matching public launch destinations, nine exact editions not recovered and one access-restricted destination. Existing listing names are retained for traceability, including original compliance claims in names; names are not endorsements. No production-readiness certification is given.
+There are 36 matching public launch destinations, nine exact editions not recovered and two access-restricted destinations. Existing listing names are retained for traceability, including original compliance claims in names; names are not endorsements. No production-readiness certification is given.
 
 ## Scope and evidence
 
@@ -22,7 +22,7 @@ Suggested sequence: first 30 days—recover exact editions and prepare synthetic
 
 ## Platform changes
 
-Rebuilt the catalogue with search, sector/status filters, sorting, individual assessments, comparisons of up to three apps, browser-local shortlist, shareable assessment links, email draft inquiries and printable review. Removed simulated Google sign-in/admin controls and iframe launch behavior. Original local-storage URL overrides no longer supersede published links. Repository-local apps/ compatibility pages point to the correct assessment; historical root-absolute GitHub Pages paths are outside this repository’s control. index1.html now redirects to the canonical catalogue. No underlying app backend was changed.
+Rebuilt the catalogue with search, sector/status filters, sorting, individual assessments, comparisons of up to three apps, browser-local shortlist, shareable assessment links, email draft inquiries and printable review. Removed simulated Google sign-in/admin controls and iframe launch behavior. Five browser-saved additional listings were recovered into the published data. Original local-storage URL overrides no longer supersede published links. Repository-local apps/ compatibility pages resolve to the correct assessment. Historical root-absolute GitHub Pages paths lie outside this repository. index1.html now redirects to the canonical catalogue. No underlying app backend was changed.
 
 ## Individual assessments
 
@@ -702,6 +702,88 @@ Status: **Accessible · unverified**. Review scope: Authenticated interface insp
 
 Current destination: [https://caribbean-payroll-with-quickbooks.lovable.app/](https://caribbean-payroll-with-quickbooks.lovable.app/)
 
+### 43. Project Support for Dominica
+
+Status: **Planning document**. Review scope: Matching public source inspected.
+
+**Business value:** Helps public-sector counterparts review a structured project-development approach.
+
+**Observed:** Matching public source is an expression-of-interest and project-development support hub with phase tasks, results framework, risk matrix and browser-local progress. It explicitly describes the M&E/MRV systems as prototypes not yet deployed in any country.
+
+**Gap:** A proposal workspace does not demonstrate a commissioned institutional MIS or government adoption.
+
+**Acceptance test:** Walk through one synthetic deliverable review, export the results framework and verify what progress persists across devices.
+
+**Commercial route:** Offer project-development consulting with a supporting workspace.
+
+Current destination: [https://oecstrading.github.io/dominica-project-development-support/](https://oecstrading.github.io/dominica-project-development-support/)
+
+Matching source: [https://github.com/oecstrading/dominica-project-development-support/blob/main/index.html](https://github.com/oecstrading/dominica-project-development-support/blob/main/index.html)
+
+### 44. Loyverse Bridge
+
+Status: **Accessible · unverified**. Review scope: Authenticated inventory interface inspected; no mutations.
+
+**Business value:** Could reduce duplicate work between restaurant inventory and accounting systems.
+
+**Observed:** Browser opened the inventory workspace. It asks the user to connect Loyverse and import stores before adding inventory locations, and labels payroll and tables as sample modules.
+
+**Gap:** Multi-store stock consistency, recipe depletion, webhook idempotency and bookkeeping are not verified by a reachable route.
+
+**Acceptance test:** Replay duplicate and out-of-order sale webhooks across two sandbox stores; reconcile recipe depletion, stock and balanced journal entries.
+
+**Commercial route:** One restaurant integration pilot after inventory reconciliation acceptance.
+
+Current destination: [https://loyverse-inventory-bridge.lovable.app/inventory](https://loyverse-inventory-bridge.lovable.app/inventory)
+
+### 45. Generative Legal Chambers
+
+Status: **Prototype**. Review scope: Matching public source inspected.
+
+**Business value:** Demonstrates intake, draft preparation and legal-matter presentation.
+
+**Observed:** Matching public source includes case and invoice views, templated draft generation and client-side actions. Attorney-review and LEDES-download buttons display alerts describing production behavior.
+
+**Gap:** An alert saying a draft was sent is not attorney delivery or e-filing. The source does not establish a working AI service, trust accounting or protected client workspace.
+
+**Acceptance test:** Use a synthetic matter; trace document generation, counsel receipt, permissions and audit history without real filing or agreement execution.
+
+**Commercial route:** Counsel-supervised prototype demonstration; implement protected matter workflows before operational use.
+
+Current destination: [https://oecstrading.github.io/Generative-Lawyers/](https://oecstrading.github.io/Generative-Lawyers/)
+
+Matching source: [https://github.com/oecstrading/Generative-Lawyers/blob/main/index.html](https://github.com/oecstrading/Generative-Lawyers/blob/main/index.html)
+
+### 46. QuickBooks Desktop Bridge to QB Online
+
+Status: **Accessible · unverified**. Review scope: Browser landing page inspected.
+
+**Business value:** Could connect legacy QuickBooks POS Desktop sales to QuickBooks Online.
+
+**Observed:** Browser landing page is specifically QB POS Desktop v19 to QBO, with agent, scheduled sync, OAuth and AI error-handling claims. It offers sign-in and a trial.
+
+**Gap:** This is narrower than a general QuickBooks Desktop migration bridge. Agent installation, token isolation, idempotency and accounting accuracy were not tested.
+
+**Acceptance test:** In disposable POS/QBO companies, sync a sale and refund twice, refresh an expired token and reconcile item, tax and payment mappings.
+
+**Commercial route:** Implementation-led migration/integration pilot; verify the actual source-product scope.
+
+Current destination: [https://qb-bridge-ai-buddy.lovable.app/](https://qb-bridge-ai-buddy.lovable.app/)
+
+### 47. JACS Financial Management System with POS and QB Integration
+
+Status: **Access restricted**. Review scope: HTTP access check only.
+
+**Business value:** Could combine POS operations and bookkeeping in one workflow.
+
+**Observed:** The saved Manus destination returned HTTP 403 during the automated check. A related JACS POS source exists, but exact deployment/version matching was not established.
+
+**Gap:** Restricted access prevents assessing the live app; a related repository is not evidence of this deployment’s current functionality.
+
+**Acceptance test:** Provide authorized test access and complete a synthetic sale, refund, stock update and duplicate-safe QuickBooks sandbox posting.
+
+**Commercial route:** Arrange a controlled demonstration; keep public launch withheld until verified.
+
 ## Evidence files
 
 - original-link-audit.json: original 42 GET checks, including body hashes.
@@ -713,6 +795,8 @@ Current destination: [https://caribbean-payroll-with-quickbooks.lovable.app/](ht
 - additional-destinations.json: IFRS studio and payroll URLs.
 
 - bundle-audit.json: public bundle URLs and superficial code counts, used only as navigation/inspection aids. Counts of fetch, storage or demo strings are not functionality or security scores.
+
+- supplemental-destinations.json: five browser-saved additions and HTTP checks.
 
 - current-link-audit.json: final destination and related-link GET checks.
 

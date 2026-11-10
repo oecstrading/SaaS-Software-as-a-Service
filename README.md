@@ -2,7 +2,7 @@
 
 Public portfolio: https://oecstrading.github.io/SaaS-Software-as-a-Service/
 
-42 individual app assessments, corrected destinations, search and filters, three-app comparisons, browser-local inquiry shortlist, email drafts and a printable portfolio review. Rebuilt 10 November 2026.
+47 individual app assessments, corrected destinations, search and filters, three-app comparisons, browser-local inquiry shortlist, email drafts and a printable portfolio review. Rebuilt 10 November 2026.
 
 This repository presents software offerings; it does not host their backends or certify production readiness. An unavailable edition is labelled explicitly. Compatibility pages under this repository’s `apps/` directory resolve to the relevant assessment; historical root-absolute `/apps/` URLs are outside this repository’s control. The alternate `index1.html` redirects to the canonical catalogue.
 
