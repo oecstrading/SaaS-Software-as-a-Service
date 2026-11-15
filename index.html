@@ -135,6 +135,7 @@
     </div>
 
     <!-- Listings Grid -->
+    <span id="catalogue" class="block" style="scroll-margin-top:140px"></span>
     <main id="listingsGrid" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         <div id="noResults" class="hidden text-center py-16">
@@ -176,14 +177,14 @@
             <div class="p-6">
                 <div id="inquiryCartList" class="mb-4 bg-gray-50 rounded-lg p-3 text-sm text-gray-700 max-h-32 overflow-y-auto"></div>
                 <p class="text-sm text-amber-600 mb-4"><i class="fas fa-info-circle mr-1"></i> Price negotiable; let's talk about your needs.</p>
-                <form id="inquiryForm" onsubmit="submitInquiry(event)">
+                <p class="text-xs text-gray-500 mb-3">This opens a draft in your email app. Review it and send it yourself. You can also email <a class="underline" href="mailto:cuthbert@oecstrading.com">cuthbert@oecstrading.com</a>.</p><form id="inquiryForm" onsubmit="submitInquiry(event)">
                     <div class="space-y-4">
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Name *</label><input type="text" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Your full name"></div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Email *</label><input type="email" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="you@company.com"></div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Company</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Company name"></div>
-                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Message</label><textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="Tell us about your project, timeline, and budget range..."></textarea></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Name *</label><input type="text" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" name="name" placeholder="Your full name"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Email *</label><input type="email" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" name="email" placeholder="you@company.com"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Company</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" name="company" placeholder="Company name"></div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Message</label><textarea rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300" name="message" placeholder="Tell us about your project, timeline, and budget range..."></textarea></div>
                     </div>
-                    <button type="submit" class="mt-6 w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-paper-plane mr-2"></i> Send Inquiry</button>
+                    <button type="submit" class="mt-6 w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-paper-plane mr-2"></i> Prepare Email</button>
                 </form>
             </div>
         </div>
@@ -227,7 +228,7 @@
     <footer class="bg-white border-t border-gray-200 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-gray-500">
             <p>© 2025 OECS Trading. All prototypes available for licensing or custom development.</p>
-            <p class="mt-1">Price negotiable; let's talk. <a href="#" class="text-indigo-600 hover:underline">Contact us</a></p>
+            <p class="mt-1">Price negotiable; let's talk. <a href="mailto:cuthbert@oecstrading.com" class="text-indigo-600 hover:underline">Contact us</a></p>
         </div>
     </footer>
 
@@ -236,59 +237,751 @@
         
         // Default listings (from JSON)
         const initialListings = [
-            { id: 1, title: "Antillia Platform", industry: "Real Estate", type: "Property Intelligence", description: "Caribbean property intelligence with due diligence built in — every listing source-checked and assessed for hurricane risk, provenance and investment fit.", tech_stack: ["React", "TypeScript", "AI Search"], weeks: 4, featured: true, current_url: "https://oecstrading.com/antillia" },
-            { id: 2, title: "Infrastructure PMIS", industry: "Project Management", type: "Platform", description: "Unified platform for internal infrastructure projects and customer loan portfolio management. Features real-time budget tracking, compliance monitoring, and stage-gated disbursements.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 6, featured: false, current_url: "https://oecstrading.com/pmis" },
-            { id: 3, title: "FaMaaS - Fixed Assets Management", industry: "Accounting & Finance", type: "Asset Management", description: "A sophisticated multi-tenant platform for tracking, managing, and optimizing fixed assets across organizations. Features automated depreciation calculations, compliance reporting, and complete asset lifecycle management.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 5, featured: false, current_url: "https://oecstrading.com/famaas" },
-            { id: 4, title: "BetterBooks Caribbean for QuickBooks", industry: "Accounting & Finance", type: "Integration", description: "Three modules — POS, Payroll and VAT Reporter — that post every transaction, pay run and VAT return straight into QuickBooks. Built specifically for the Caribbean's statutory and tax landscape.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 5, featured: false, current_url: "https://oecstrading.com/betterbooks" },
-            { id: 5, title: "IFRS & GAAP AI Statement Generator", industry: "Accounting & Finance", type: "AI Reporting", description: "An AI-assisted reporting studio that turns ledger data into IFRS- and GAAP-aligned financial statements and audit workpapers.", tech_stack: ["React", "TypeScript", "Generative AI"], weeks: 5, featured: false, current_url: "https://oecstrading.com/ifrs" },
-            { id: 6, title: "EcoChill Proposa-Link", industry: "Climate & dMRV", type: "Proposal Platform", description: "An enterprise proposal platform for refrigeration efficiency upgrades and microgrid engineering projects.", tech_stack: ["React", "TypeScript", "Energy Modeling"], weeks: 4, featured: false, current_url: "https://oecstrading.com/ecochill" },
-            { id: 7, title: "Belize Blue Economy MRV MIS", industry: "Climate & dMRV", type: "MIS / MRV", description: "A full-stack MIS and MRV dashboard aligned with Belize's Sustainable Ocean Plan and coastal investment priorities.", tech_stack: ["React", "TypeScript", "MRV"], weeks: 5, featured: false, current_url: "https://oecstrading.com/belize" },
-            { id: 8, title: "Caribbean Finance Hub", industry: "Accounting & Finance", type: "Loan Management", description: "A specialized IFRS for SMEs workspace for managing micro-loans, collections, expected credit loss, and portfolio performance.", tech_stack: ["React", "TypeScript", "Loan Management"], weeks: 4, featured: false, current_url: "https://oecstrading.com/financehub" },
-            { id: 9, title: "Easy Sales Cloud", industry: "Accounting & Finance", type: "POS", description: "A modern multi-location retail POS with inventory, customer management, staff controls, and QuickBooks connectivity.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/easysales" },
-            { id: 10, title: "VAT Reporter AI", industry: "Accounting & Finance", type: "Tax Compliance", description: "An AI-powered VAT/GST return preparation and compliance platform that automates tax calculations, validates data against local regulations, and generates submission-ready returns.", tech_stack: ["React", "TypeScript", "AI/ML"], weeks: 4, featured: false, current_url: "https://oecstrading.com/vat" },
-            { id: 11, title: "Gender and Climate Finance Tagging Platform", industry: "Climate & dMRV", type: "Climate Finance", description: "A sovereign climate-finance workspace for project documentation, gender tagging, MRV, and investment pitch development.", tech_stack: ["React", "TypeScript", "MRV"], weeks: 5, featured: false, current_url: "https://oecstrading.com/gender" },
-            { id: 12, title: "Dominica DOMCREP M&E MIS", industry: "Climate & dMRV", type: "M&E", description: "A secure monitoring and evaluation system for tracking resilience-program results, activities, indicators, and evidence.", tech_stack: ["React", "TypeScript", "M&E Framework"], weeks: 5, featured: false, current_url: "https://oecstrading.com/domcrep" },
-            { id: 13, title: "Grenada UBEC Blue Economy M&E", industry: "Climate & dMRV", type: "M&E", description: "A comprehensive monitoring and evaluation platform for Grenada's blue economy investment program.", tech_stack: ["React", "TypeScript", "M&E"], weeks: 5, featured: false, current_url: "https://oecstrading.com/grenada" },
-            { id: 14, title: "OECS AI Institute Platform", industry: "Business Incubator", type: "Learning Management", description: "The central hub for our virtual incubator, featuring learning management, mentorship matching, and resource libraries.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 4, featured: false, current_url: "https://oecstrading.com/aiinstitute" },
-            { id: 15, title: "Close Command Hub", industry: "Accounting & Finance", type: "Workflow Management", description: "A month-end close management command center that turns the financial close into a tracked, auditable workflow.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 3, featured: false, current_url: "https://oecstrading.com/close" },
-            { id: 16, title: "Executive Portfolio Hub", industry: "Accounting & Finance", type: "Portfolio Analytics", description: "A private wealth command center consolidating entities, investments, liabilities, cash flow, and portfolio performance.", tech_stack: ["React", "TypeScript", "Portfolio Analytics"], weeks: 4, featured: false, current_url: "https://oecstrading.com/portfolio" },
-            { id: 17, title: "QuickBooks Utility Tools", industry: "Accounting & Finance", type: "Utility Tools", description: "A suite of specialized utility tools that extend QuickBooks Online functionality for power users and accountants.", tech_stack: ["React", "TypeScript", "QuickBooks API"], weeks: 3, featured: false, current_url: "https://oecstrading.com/qbutils" },
-            { id: 18, title: "JACS Restaurant Management", industry: "Accounting & Finance", type: "Restaurant POS", description: "A comprehensive restaurant management system featuring POS dashboard, kitchen orders, table management with QR code self-ordering, and WhatsApp broadcast automation.", tech_stack: ["React", "Multi-panel POS", "WhatsApp API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/jacs" },
-            { id: 19, title: "E-Testing Driver's License", industry: "E-Gov Solutions", type: "E-Government", description: "A modern, secure, and scalable e-testing solution for OECS governments to digitize driver's license examinations.", tech_stack: ["React", "Python", "Django"], weeks: 8, featured: false, current_url: "https://oecstrading.com/etesting" },
-            { id: 20, title: "eLandSaintLucia", industry: "E-Gov Solutions", type: "Land Information System", description: "An AI-powered digital land information system with cadastral mapping, parcel search, blockchain-verified entries, and ISO 19152 LADM compliance.", tech_stack: ["React", "GIS/Mapbox", "Blockchain"], weeks: 6, featured: false, current_url: "https://oecstrading.com/eland" },
-            { id: 21, title: "JACS Hospice Management Platform", industry: "Health Solutions", type: "Healthcare Management", description: "An enterprise hospice management platform for patient records, care plans, staff scheduling, and facility operations with comprehensive compliance tracking.", tech_stack: ["React", "TypeScript", "PostgreSQL"], weeks: 5, featured: false, current_url: "https://oecstrading.com/hospice" },
-            { id: 22, title: "BetterBooks Caribbean Marketing Page", industry: "Marketing", type: "Landing Page", description: "A sleek, conversion-focused marketing landing page that showcases the full BetterBooks Caribbean suite.", tech_stack: ["React", "TypeScript", "Tailwind CSS"], weeks: 2, featured: false, current_url: "https://oecstrading.com/betterbooks-marketing" },
-            { id: 23, title: "TV & Radio Financial Management System", industry: "Accounting & Finance", type: "Media Finance", description: "A comprehensive financial management system for media and broadcasting companies with campaign tracking and automated proof of play.", tech_stack: ["React", "Campaign Tracking", "Proof of Play"], weeks: 5, featured: false, current_url: "https://oecstrading.com/tvradio" },
-            { id: 24, title: "MLS Real Estate Marketplace", industry: "Real Estate", type: "Marketplace", description: "A centralized Multiple Listing Service (MLS) platform connecting real estate professionals and buyers across the OECS.", tech_stack: ["React", "Next.js", "Mapbox"], weeks: 7, featured: false, current_url: "https://oecstrading.com/mls" },
-            { id: 25, title: "OECS Realtors Platform", industry: "Real Estate", type: "Marketplace", description: "A multi-asset Caribbean marketplace for property, land, vehicles, equipment, and investment opportunities.", tech_stack: ["React", "TypeScript", "Marketplace"], weeks: 4, featured: false, current_url: "https://oecstrading.com/realtors" },
-            { id: 26, title: "Wheels Works Auto Shop", industry: "Accounting & Finance", type: "Auto Shop Management", description: "A complete financial and operational management system tailored for the automotive service industry.", tech_stack: ["React", "Supabase", "Calendar API"], weeks: 4, featured: false, current_url: "https://oecstrading.com/wheels" },
-            { id: 27, title: "OECS Trading Platform", industry: "Trade / Logistics", type: "Digital Gateway", description: "A comprehensive digital gateway connecting Caribbean businesses with US and global trade partners.", tech_stack: ["React", "Node.js", "PostgreSQL"], weeks: 6, featured: false, current_url: "https://oecstrading.com/trading" },
-            { id: 28, title: "Smiley's Tinting Plus — Business & Inspection Hub", industry: "Automotive Services", type: "Business Operations", description: "Dark-themed operations hub for a Caribbean tinting/detailing business. Features 6-step vehicle inspection, AI damage detection, 360° spin viewer, before/after slider, live walkaround, Coating Club membership tracking, and PDF proposals.", tech_stack: ["Vanilla JS", "Tailwind", "Canvas", "SVG"], weeks: 5, featured: true, current_url: "/apps/smileys-tinting-plus.html" },
-            { id: 29, title: "Audit Studio — AI-Powered Audit Platform", industry: "Accounting & Finance", type: "Audit Management", description: "Enterprise audit platform with Planning→Execution→Completion workflow, trial balance auto-mapping, materiality scoping, risk-assertion matrix, DeepSeek AI assistant, SHA-256 audit log, AES-256-GCM vault, TOTP MFA, and budget prediction.", tech_stack: ["Vanilla JS", "Web Crypto", "DeepSeek V4.1", "XLSX"], weeks: 10, featured: true, current_url: "/apps/audit-studio.html" },
-            { id: 30, title: "Caribbean Gas Intelligence — dMRV Monitoring System", industry: "Climate & dMRV", type: "IoT Monitoring", description: "LPG cylinder + biogas digester monitoring for St. Lucia pilot. Features 4-scene animated demo, 6-step auto-order flow (5% trigger → SMS/WhatsApp → payment), Wepay/Card/Bank/Pay-on-Delivery, and full user guide for 5 roles.", tech_stack: ["Vanilla JS", "SVG Animation", "IoT APIs", "Wepay"], weeks: 8, featured: false, current_url: "/apps/caribbean-gas-intelligence.html" },
-            { id: 31, title: "Antillia Skills Bank — Verified Professionals", industry: "HR & Recruitment", type: "Talent Marketplace", description: "Caribbean talent marketplace connecting verified professionals with clients. Features sector/availability filters, worker cards with verified badges, ratings, hourly rates, and detailed profile modals.", tech_stack: ["Vanilla JS", "CSS Grid", "localStorage"], weeks: 3, featured: false, current_url: "/apps/antillia-skills-bank.html" },
-            { id: 32, title: "Biogas St. Lucia — Northern Pilot (Gros Islet)", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "6 m³ modular biogas digester pilot in Gros Islet/Rodney Bay. 13-tab dashboard: PFD, P&ID, mechanical, civil, electrical, carbon accounting, financials. Scale-up from 30 to 2,000 cylinders with IRR/payback.", tech_stack: ["Vanilla JS", "SVG", "Engineering Engine"], weeks: 6, featured: false, current_url: "/apps/biogas-stlucia-north.html" },
-            { id: 33, title: "Biogas St. Lucia — Vieux Fort Pilot", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "4 m³ modular biogas digester pilot in Vieux Fort. 3.0 m³/day biogas, 30 CNG cylinders, $91,760 CAPEX, 1.4-year payback at scale, 42% IRR, 8 tCO₂e/year. Full PFD, P&ID, BoQ, workflows.", tech_stack: ["Vanilla JS", "SVG", "Engineering Engine"], weeks: 6, featured: false, current_url: "/apps/biogas-stlucia-vieuxfort.html" },
-            { id: 34, title: "COSMOS Biogas Haiti — Filling Station Pilot", industry: "Climate & dMRV", type: "Engineering Dashboard", description: "Biogas filling station evaluation for Les Cayes, Haiti. 5-tab interface covering overview, financial model, technical, carbon & dMRV, and scale-up viability. Best-features integration from Uganda, Kenya, India, Nepal.", tech_stack: ["Vanilla JS", "SVG", "Carbon Accounting"], weeks: 5, featured: false, current_url: "/apps/cosmos-biogas-haiti.html" },
-            { id: 35, title: "Biogas Haiti — Industrial Division (1,000 m³)", industry: "Climate & dMRV", type: "Engineering Presentation", description: "Industrial-scale 1,000 m³ digester serving 200 households + 10 commercial kitchens. $352,880 CAPEX, $194,700 revenue, 3.1-year payback, 28.4% IRR. 18-month timeline, risk mitigation, 9-source best-features.", tech_stack: ["Vanilla JS", "Financial Modeling"], weeks: 5, featured: false, current_url: "/apps/biogas-haiti-industrial.html" },
-            { id: 36, title: "BiogasSTLucia — GCF/CDB Concept Note", industry: "Climate Finance", type: "Grant Concept Note", description: "Print-ready GCF/CDB submission concept note. 18 sections covering Executive Summary, Theory of Change, Market Analysis, Economic Viability, Competitive Landscape, Financial Model, GCF Criteria, Financing ($8.2M), Safeguards, M&E, Budget. Includes 3 annexes.", tech_stack: ["HTML/CSS", "Print-Optimized"], weeks: 4, featured: false, current_url: "/apps/biogas-stlucia-concept-note.html" },
-            { id: 37, title: "Rivet & Roan Barber Co. — Booking Platform", industry: "Hospitality", type: "Appointment Booking", description: "One-chair barbershop booking platform. 4-step customer flow with live availability engine (respects lunch + existing bookings), deposit-backed booking, SMS reminders, owner dashboard with KPIs, automation feed, waitlist auto-fill.", tech_stack: ["Vanilla JS", "Availability Engine"], weeks: 4, featured: false, current_url: "/apps/rivet-roan-barber.html" },
-            { id: 38, title: "CaribCarbon — Caribbean Climate Asset Marketplace", industry: "Climate Finance", type: "Marketplace", description: "Multi-asset climate finance marketplace: Blue Carbon, Solar, Wind, Biogas, Geothermal, EVs, Refrigeration, Efficiency, Agroforestry. Interactive calculators with 16 country parameters, 85% revenue share, featured projects portfolio.", tech_stack: ["Vanilla JS", "SVG", "Carbon Engine"], weeks: 6, featured: true, current_url: "/apps/caribcarbon-marketplace.html" },
-            { id: 39, title: "The AI AML/CFT Compliance Auditor — Standalone", industry: "Compliance & Legal", type: "Audit & Compliance", description: "Browser-local AML/CFT audit platform. Password-gated, 9-control checklist, deficiency tracker, workpaper library, CSV/XLSX import with field mapping, 7 regulator-format templates (FSRC, FSRA, GARFIN, ECCB, CFATF, UAE, Universal), IFRS SME authoring, and local attestation workflow.", tech_stack: ["Vanilla JS", "Web Crypto", "XLSX", "localStorage"], weeks: 8, featured: false, current_url: "/apps/aml-cft-auditor.html" },
-            { id: 40, title: "Caribbean Micro-Lending Enterprise Matrix", industry: "Accounting & Finance", type: "Loan Management", description: "Loan management for Caribbean micro-lenders. Performance dashboard (yield, NPL, capital adequacy, tax provision), central ledger, IFRS aging matrix, credit underwriting card, financial statements (IFRS-SME), St. Kitts tax bridge, RBAC, XCD/USD toggle.", tech_stack: ["Tailwind", "SheetJS", "RBAC", "IFRS-SME"], weeks: 6, featured: false, current_url: "/apps/micro-lending-matrix.html" },
-            { id: 41, title: "AI Financial Statement Generator — Audit Platform", industry: "Accounting & Finance", type: "Financial Reporting", description: "Converts trial balance to IFRS for SMEs financial statements. 4-step workflow (Upload & Map → Statements → Review & Edit → Export), auto-mapping, placeholder tracking, contenteditable review, PDF/Excel export, saved projects.", tech_stack: ["XLSX", "html2pdf", "contenteditable"], weeks: 5, featured: false, current_url: "/apps/financial-statement-generator.html" },
-            { id: 42, title: "JACS Payroll — Caribbean-Compliant Payroll for QuickBooks", industry: "Accounting & Finance", type: "Payroll Platform", description: "Caribbean payroll for 9 islands (St. Lucia, Barbados, Jamaica, Trinidad, Grenada, Dominica, St. Kitts, St. Vincent, Antigua). Auto NIS/PAYE/Health Surcharge, QuickBooks journal posting, statutory returns (TD4, P45/P60), bank file export, and AI payroll audit.", tech_stack: ["HTML/CSS", "SVG", "DeepSeek AI", "QuickBooks API"], weeks: 7, featured: true, current_url: "/apps/jacs-payroll.html" },
-            {"id":43,"title":"AI-Powered Data Analytics Engineer","industry":"Data & Analytics","type":"Analytics & Reporting Prototype","description":"Interactive enterprise-census analytics and reporting prototype illustrated with a Saint Lucia case study. Six tabs cover inception, data review and validation, statistical tables, draft reporting, stakeholder validation, and final documentation with Python/SPSS code examples. View-only demonstration with illustrative figures; live data ingestion and AI execution are not connected.","tech_stack":["HTML/CSS","JavaScript","Python/SPSS Examples"],"weeks":6,"featured":false,"current_url":"https://oecstrading.github.io/AI-Powered-Data-Analytics-Engineer/"}
-        ];
+            {
+                        "id": 1,
+                        "title": "Antillia Platform",
+                        "industry": "Real Estate",
+                        "type": "Property Intelligence",
+                        "description": "Caribbean property intelligence with due diligence built in — every listing source-checked and assessed for hurricane risk, provenance and investment fit.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "AI Search"
+                        ],
+                        "weeks": 4,
+                        "featured": true,
+                        "current_url": "https://www.antillia.online/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 2,
+                        "title": "Infrastructure PMIS",
+                        "industry": "Project Management",
+                        "type": "Platform",
+                        "description": "Unified platform for internal infrastructure projects and customer loan portfolio management. Features real-time budget tracking, compliance monitoring, and stage-gated disbursements.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "PostgreSQL"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 3,
+                        "title": "FaMaaS - Fixed Assets Management",
+                        "industry": "Accounting & Finance",
+                        "type": "Asset Management",
+                        "description": "A sophisticated multi-tenant platform for tracking, managing, and optimizing fixed assets across organizations. Features automated depreciation calculations, compliance reporting, and complete asset lifecycle management.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "PostgreSQL"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://fixed-assets-management-system.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 4,
+                        "title": "BetterBooks Caribbean for QuickBooks",
+                        "industry": "Accounting & Finance",
+                        "type": "Integration",
+                        "description": "Three modules — POS, Payroll and VAT Reporter — that post every transaction, pay run and VAT return straight into QuickBooks. Built specifically for the Caribbean's statutory and tax landscape.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "QuickBooks API"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://counter-to-ledger.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 5,
+                        "title": "IFRS & GAAP AI Statement Generator",
+                        "industry": "Accounting & Finance",
+                        "type": "AI Reporting",
+                        "description": "An AI-assisted reporting studio that turns ledger data into IFRS- and GAAP-aligned financial statements and audit workpapers.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Generative AI"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://ai-ifrs-gaap-financial-statements-generator.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 6,
+                        "title": "EcoChill Proposa-Link",
+                        "industry": "Climate & dMRV",
+                        "type": "Proposal Platform",
+                        "description": "An enterprise proposal platform for refrigeration efficiency upgrades and microgrid engineering projects.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Energy Modeling"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://ecochill-proposa-link.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 7,
+                        "title": "Belize Blue Economy MRV MIS",
+                        "industry": "Climate & dMRV",
+                        "type": "MIS / MRV",
+                        "description": "A full-stack MIS and MRV dashboard aligned with Belize's Sustainable Ocean Plan and coastal investment priorities.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "MRV"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://belize-blue-economy-mis.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 8,
+                        "title": "Caribbean Finance Hub",
+                        "industry": "Accounting & Finance",
+                        "type": "Loan Management",
+                        "description": "A specialized IFRS for SMEs workspace for managing micro-loans, collections, expected credit loss, and portfolio performance.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Loan Management"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://carib-glide.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 9,
+                        "title": "Easy Sales Cloud",
+                        "industry": "Accounting & Finance",
+                        "type": "POS",
+                        "description": "A modern multi-location retail POS with inventory, customer management, staff controls, and QuickBooks connectivity.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "QuickBooks API"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://easy-sales-cloud.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Sign-in required; contact us for a demonstration."
+            },
+            {
+                        "id": 10,
+                        "title": "VAT Reporter AI",
+                        "industry": "Accounting & Finance",
+                        "type": "Tax Compliance",
+                        "description": "An AI-powered VAT/GST return preparation and compliance platform that automates tax calculations, validates data against local regulations, and generates submission-ready returns.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "AI/ML"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://vatreporter-ai.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 11,
+                        "title": "Gender and Climate Finance Tagging Platform",
+                        "industry": "Climate & dMRV",
+                        "type": "Climate Finance",
+                        "description": "A sovereign climate-finance workspace for project documentation, gender tagging, MRV, and investment pitch development.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "MRV"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://gcftportal.org/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 12,
+                        "title": "Dominica DOMCREP M&E MIS",
+                        "industry": "Climate & dMRV",
+                        "type": "M&E",
+                        "description": "A secure monitoring and evaluation system for tracking resilience-program results, activities, indicators, and evidence.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "M&E Framework"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 13,
+                        "title": "Grenada UBEC Blue Economy M&E",
+                        "industry": "Climate & dMRV",
+                        "type": "M&E",
+                        "description": "A comprehensive monitoring and evaluation platform for Grenada's blue economy investment program.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "M&E"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 14,
+                        "title": "OECS AI Institute Platform",
+                        "industry": "Business Incubator",
+                        "type": "Learning Management",
+                        "description": "The central hub for our virtual incubator, featuring learning management, mentorship matching, and resource libraries.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Tailwind CSS"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://www.theoecsaiinstitute.com/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 15,
+                        "title": "Close Command Hub",
+                        "industry": "Accounting & Finance",
+                        "type": "Workflow Management",
+                        "description": "A month-end close management command center that turns the financial close into a tracked, auditable workflow.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Tailwind CSS"
+                        ],
+                        "weeks": 3,
+                        "featured": false,
+                        "current_url": "https://close-command-hub.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Sign-in required; contact us for a demonstration."
+            },
+            {
+                        "id": 16,
+                        "title": "Executive Portfolio Hub",
+                        "industry": "Accounting & Finance",
+                        "type": "Portfolio Analytics",
+                        "description": "A private wealth command center consolidating entities, investments, liabilities, cash flow, and portfolio performance.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Portfolio Analytics"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://wealth-compass-hub-06.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 17,
+                        "title": "QuickBooks Utility Tools",
+                        "industry": "Accounting & Finance",
+                        "type": "Utility Tools",
+                        "description": "A suite of specialized utility tools that extend QuickBooks Online functionality for power users and accountants.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "QuickBooks API"
+                        ],
+                        "weeks": 3,
+                        "featured": false,
+                        "current_url": "https://quickbooks-utility-tools.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 18,
+                        "title": "JACS Restaurant Management",
+                        "industry": "Accounting & Finance",
+                        "type": "Restaurant POS",
+                        "description": "A comprehensive restaurant management system featuring POS dashboard, kitchen orders, table management with QR code self-ordering, and WhatsApp broadcast automation.",
+                        "tech_stack": [
+                                    "React",
+                                    "Multi-panel POS",
+                                    "WhatsApp API"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://jacs-restaurant-pos-system.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 19,
+                        "title": "E-Testing Driver's License",
+                        "industry": "E-Gov Solutions",
+                        "type": "E-Government",
+                        "description": "A modern, secure, and scalable e-testing solution for OECS governments to digitize driver's license examinations.",
+                        "tech_stack": [
+                                    "React",
+                                    "Python",
+                                    "Django"
+                        ],
+                        "weeks": 8,
+                        "featured": false,
+                        "current_url": "https://oecs-drivers-license-testing-platform.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 20,
+                        "title": "eLandSaintLucia",
+                        "industry": "E-Gov Solutions",
+                        "type": "Land Information System",
+                        "description": "An AI-powered digital land information system with cadastral mapping, parcel search, blockchain-verified entries, and ISO 19152 LADM compliance.",
+                        "tech_stack": [
+                                    "React",
+                                    "GIS/Mapbox",
+                                    "Blockchain"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 21,
+                        "title": "JACS Hospice Management Platform",
+                        "industry": "Health Solutions",
+                        "type": "Healthcare Management",
+                        "description": "An enterprise hospice management platform for patient records, care plans, staff scheduling, and facility operations with comprehensive compliance tracking.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "PostgreSQL"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://jacs-enterprise-medical.lovable.app",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 22,
+                        "title": "BetterBooks Caribbean Marketing Page",
+                        "industry": "Marketing",
+                        "type": "Landing Page",
+                        "description": "A sleek, conversion-focused marketing landing page that showcases the full BetterBooks Caribbean suite.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Tailwind CSS"
+                        ],
+                        "weeks": 2,
+                        "featured": false,
+                        "current_url": "https://better-books-marketing-page.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 23,
+                        "title": "TV & Radio Financial Management System",
+                        "industry": "Accounting & Finance",
+                        "type": "Media Finance",
+                        "description": "A comprehensive financial management system for media and broadcasting companies with campaign tracking and automated proof of play.",
+                        "tech_stack": [
+                                    "React",
+                                    "Campaign Tracking",
+                                    "Proof of Play"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 24,
+                        "title": "MLS Real Estate Marketplace",
+                        "industry": "Real Estate",
+                        "type": "Marketplace",
+                        "description": "A centralized Multiple Listing Service (MLS) platform connecting real estate professionals and buyers across the OECS.",
+                        "tech_stack": [
+                                    "React",
+                                    "Next.js",
+                                    "Mapbox"
+                        ],
+                        "weeks": 7,
+                        "featured": false,
+                        "current_url": "https://oecsrealestatemarketplace.com/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 25,
+                        "title": "OECS Realtors Platform",
+                        "industry": "Real Estate",
+                        "type": "Marketplace",
+                        "description": "A multi-asset Caribbean marketplace for property, land, vehicles, equipment, and investment opportunities.",
+                        "tech_stack": [
+                                    "React",
+                                    "TypeScript",
+                                    "Marketplace"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://oecs-realtors-platform.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Public introduction; some features may require sign-in."
+            },
+            {
+                        "id": 26,
+                        "title": "Wheels Works Auto Shop",
+                        "industry": "Accounting & Finance",
+                        "type": "Auto Shop Management",
+                        "description": "A complete financial and operational management system tailored for the automotive service industry.",
+                        "tech_stack": [
+                                    "React",
+                                    "Supabase",
+                                    "Calendar API"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/Wheels-Works/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 27,
+                        "title": "OECS Trading Platform",
+                        "industry": "Trade / Logistics",
+                        "type": "Digital Gateway",
+                        "description": "A comprehensive digital gateway connecting Caribbean businesses with US and global trade partners.",
+                        "tech_stack": [
+                                    "React",
+                                    "Node.js",
+                                    "PostgreSQL"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "https://oecstrading.com/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 28,
+                        "title": "Smiley's Tinting Plus — Business & Inspection Hub",
+                        "industry": "Automotive Services",
+                        "type": "Business Operations",
+                        "description": "Dark-themed operations hub for a Caribbean tinting/detailing business. Features 6-step vehicle inspection, AI damage detection, 360° spin viewer, before/after slider, live walkaround, Coating Club membership tracking, and PDF proposals.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "Tailwind",
+                                    "Canvas",
+                                    "SVG"
+                        ],
+                        "weeks": 5,
+                        "featured": true,
+                        "current_url": "https://oecstrading.github.io/Tinting-Business-Platform-plus-Accounting-V11/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 29,
+                        "title": "Audit Studio — AI-Powered Audit Platform",
+                        "industry": "Accounting & Finance",
+                        "type": "Audit Management",
+                        "description": "Enterprise audit platform with Planning→Execution→Completion workflow, trial balance auto-mapping, materiality scoping, risk-assertion matrix, DeepSeek AI assistant, SHA-256 audit log, AES-256-GCM vault, TOTP MFA, and budget prediction.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "Web Crypto",
+                                    "DeepSeek V4.1",
+                                    "XLSX"
+                        ],
+                        "weeks": 10,
+                        "featured": true,
+                        "current_url": "https://oecstrading.github.io/AI-Financial-Auditor-with-DeepSeek-/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 30,
+                        "title": "Caribbean Gas Intelligence — dMRV Monitoring System",
+                        "industry": "Climate & dMRV",
+                        "type": "IoT Monitoring",
+                        "description": "LPG cylinder + biogas digester monitoring for St. Lucia pilot. Features 4-scene animated demo, 6-step auto-order flow (5% trigger → SMS/WhatsApp → payment), Wepay/Card/Bank/Pay-on-Delivery, and full user guide for 5 roles.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "SVG Animation",
+                                    "IoT APIs",
+                                    "Wepay"
+                        ],
+                        "weeks": 8,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/Caribbean-Gas-Intelligence-St.-Lucia-Pilot-/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 31,
+                        "title": "Antillia Skills Bank — Verified Professionals",
+                        "industry": "HR & Recruitment",
+                        "type": "Talent Marketplace",
+                        "description": "Caribbean talent marketplace connecting verified professionals with clients. Features sector/availability filters, worker cards with verified badges, ratings, hourly rates, and detailed profile modals.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "CSS Grid",
+                                    "localStorage"
+                        ],
+                        "weeks": 3,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/Antillia-Skills-Bank/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 32,
+                        "title": "Biogas St. Lucia — Northern Pilot (Gros Islet)",
+                        "industry": "Climate & dMRV",
+                        "type": "Engineering Dashboard",
+                        "description": "6 m³ modular biogas digester pilot in Gros Islet/Rodney Bay. 13-tab dashboard: PFD, P&ID, mechanical, civil, electrical, carbon accounting, financials. Scale-up from 30 to 2,000 cylinders with IRR/payback.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "SVG",
+                                    "Engineering Engine"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/Biogas-St-Lucia-Filling-Station-Pilot/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 33,
+                        "title": "Biogas St. Lucia — Vieux Fort Pilot",
+                        "industry": "Climate & dMRV",
+                        "type": "Engineering Dashboard",
+                        "description": "4 m³ modular biogas digester pilot in Vieux Fort. 3.0 m³/day biogas, 30 CNG cylinders, $91,760 CAPEX, 1.4-year payback at scale, 42% IRR, 8 tCO₂e/year. Full PFD, P&ID, BoQ, workflows.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "SVG",
+                                    "Engineering Engine"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 34,
+                        "title": "COSMOS Biogas Haiti — Filling Station Pilot",
+                        "industry": "Climate & dMRV",
+                        "type": "Engineering Dashboard",
+                        "description": "Biogas filling station evaluation for Les Cayes, Haiti. 5-tab interface covering overview, financial model, technical, carbon & dMRV, and scale-up viability. Best-features integration from Uganda, Kenya, India, Nepal.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "SVG",
+                                    "Carbon Accounting"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/Biogas-Haiti-Filling-Station-Pilot/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 35,
+                        "title": "Biogas Haiti — Industrial Division (1,000 m³)",
+                        "industry": "Climate & dMRV",
+                        "type": "Engineering Presentation",
+                        "description": "Industrial-scale 1,000 m³ digester serving 200 households + 10 commercial kitchens. $352,880 CAPEX, $194,700 revenue, 3.1-year payback, 28.4% IRR. 18-month timeline, risk mitigation, 9-source best-features.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "Financial Modeling"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 36,
+                        "title": "BiogasSTLucia — GCF/CDB Concept Note",
+                        "industry": "Climate Finance",
+                        "type": "Grant Concept Note",
+                        "description": "Print-ready GCF/CDB submission concept note. 18 sections covering Executive Summary, Theory of Change, Market Analysis, Economic Viability, Competitive Landscape, Financial Model, GCF Criteria, Financing ($8.2M), Safeguards, M&E, Budget. Includes 3 annexes.",
+                        "tech_stack": [
+                                    "HTML/CSS",
+                                    "Print-Optimized"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 37,
+                        "title": "Rivet & Roan Barber Co. — Booking Platform",
+                        "industry": "Hospitality",
+                        "type": "Appointment Booking",
+                        "description": "One-chair barbershop booking platform. 4-step customer flow with live availability engine (respects lunch + existing bookings), deposit-backed booking, SMS reminders, owner dashboard with KPIs, automation feed, waitlist auto-fill.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "Availability Engine"
+                        ],
+                        "weeks": 4,
+                        "featured": false,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 38,
+                        "title": "CaribCarbon — Caribbean Climate Asset Marketplace",
+                        "industry": "Climate Finance",
+                        "type": "Marketplace",
+                        "description": "Multi-asset climate finance marketplace: Blue Carbon, Solar, Wind, Biogas, Geothermal, EVs, Refrigeration, Efficiency, Agroforestry. Interactive calculators with 16 country parameters, 85% revenue share, featured projects portfolio.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "SVG",
+                                    "Carbon Engine"
+                        ],
+                        "weeks": 6,
+                        "featured": true,
+                        "current_url": "",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Contact us to request a demonstration."
+            },
+            {
+                        "id": 39,
+                        "title": "The AI AML/CFT Compliance Auditor — Standalone",
+                        "industry": "Compliance & Legal",
+                        "type": "Audit & Compliance",
+                        "description": "Browser-local AML/CFT audit platform. Password-gated, 9-control checklist, deficiency tracker, workpaper library, CSV/XLSX import with field mapping, 7 regulator-format templates (FSRC, FSRA, GARFIN, ECCB, CFATF, UAE, Universal), IFRS SME authoring, and local attestation workflow.",
+                        "tech_stack": [
+                                    "Vanilla JS",
+                                    "Web Crypto",
+                                    "XLSX",
+                                    "localStorage"
+                        ],
+                        "weeks": 8,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/AML-AI-Powered-Compliance-Officer/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Local workspace password setup or unlock is required."
+            },
+            {
+                        "id": 40,
+                        "title": "Caribbean Micro-Lending Enterprise Matrix",
+                        "industry": "Accounting & Finance",
+                        "type": "Loan Management",
+                        "description": "Loan management for Caribbean micro-lenders. Performance dashboard (yield, NPL, capital adequacy, tax provision), central ledger, IFRS aging matrix, credit underwriting card, financial statements (IFRS-SME), St. Kitts tax bridge, RBAC, XCD/USD toggle.",
+                        "tech_stack": [
+                                    "Tailwind",
+                                    "SheetJS",
+                                    "RBAC",
+                                    "IFRS-SME"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "https://carib-glide.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 41,
+                        "title": "AI Financial Statement Generator — Audit Platform",
+                        "industry": "Accounting & Finance",
+                        "type": "Financial Reporting",
+                        "description": "Converts trial balance to IFRS for SMEs financial statements. 4-step workflow (Upload & Map → Statements → Review & Edit → Export), auto-mapping, placeholder tracking, contenteditable review, PDF/Excel export, saved projects.",
+                        "tech_stack": [
+                                    "XLSX",
+                                    "html2pdf",
+                                    "contenteditable"
+                        ],
+                        "weeks": 5,
+                        "featured": false,
+                        "current_url": "https://ai-ifrs-gaap-financial-statements-generator.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 42,
+                        "title": "JACS Payroll — Caribbean-Compliant Payroll for QuickBooks",
+                        "industry": "Accounting & Finance",
+                        "type": "Payroll Platform",
+                        "description": "Caribbean payroll for 9 islands (St. Lucia, Barbados, Jamaica, Trinidad, Grenada, Dominica, St. Kitts, St. Vincent, Antigua). Auto NIS/PAYE/Health Surcharge, QuickBooks journal posting, statutory returns (TD4, P45/P60), bank file export, and AI payroll audit.",
+                        "tech_stack": [
+                                    "HTML/CSS",
+                                    "SVG",
+                                    "DeepSeek AI",
+                                    "QuickBooks API"
+                        ],
+                        "weeks": 7,
+                        "featured": true,
+                        "current_url": "https://caribbean-payroll-with-quickbooks.lovable.app/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            },
+            {
+                        "id": 43,
+                        "title": "AI-Powered Data Analytics Engineer",
+                        "industry": "Data & Analytics",
+                        "type": "Analytics & Reporting Prototype",
+                        "description": "Interactive enterprise-census analytics and reporting prototype illustrated with a Saint Lucia case study. Six tabs cover inception, data review and validation, statistical tables, draft reporting, stakeholder validation, and final documentation with Python/SPSS code examples. View-only demonstration with illustrative figures; live data ingestion and AI execution are not connected.",
+                        "tech_stack": [
+                                    "HTML/CSS",
+                                    "JavaScript",
+                                    "Python/SPSS Examples"
+                        ],
+                        "weeks": 6,
+                        "featured": false,
+                        "current_url": "https://oecstrading.github.io/AI-Powered-Data-Analytics-Engineer/",
+                        "link_checked": "2026-11-15",
+                        "access_note": "Open application or demonstration."
+            }
+];
 
         // Load state from localStorage or initialize
         const deepFreeze = value => { Object.values(value).forEach(v => { if (v && typeof v === 'object') deepFreeze(v); }); return Object.freeze(value); };
         const listings = deepFreeze(initialListings);
-        let cart = JSON.parse(localStorage.getItem('saasCart')) || [];
+        let cart = [];
+        try { const saved = JSON.parse(localStorage.getItem('saasCart') || '[]'); if (Array.isArray(saved)) cart = saved.filter(id => initialListings.some(l => l.id === id)); } catch (_) { /* Ignore invalid local inquiry state. */ }
         let currentFilter = { industry: '', type: '', search: '', sort: 'name' };
 
         // --- Helpers ---
-        function saveCart() { localStorage.setItem('saasCart', JSON.stringify(cart)); updateCartUI(); }
+        function saveCart() { try { localStorage.setItem('saasCart', JSON.stringify(cart)); } catch (_) {} updateCartUI(); }
         function getListingById(id) { return listings.find(l => l.id === id); }
         function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
@@ -327,7 +1020,7 @@
                             </div>
                             ${listing.featured ? '<span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded-full">Featured</span>' : ''}
                         </div>
-                        <p class="text-sm text-gray-600 line-clamp-3 mb-3 flex-1">${escapeHtml(listing.description)}</p>
+                        <p class="text-sm text-gray-600 line-clamp-3 mb-3 flex-1">${escapeHtml(listing.description)}</p><p class="text-xs text-gray-500 mb-3">${escapeHtml(listing.access_note)}</p>
                         <div class="flex flex-wrap gap-1 mb-3">
                             ${(listing.tech_stack || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
                         </div>
@@ -337,16 +1030,13 @@
                             <span class="badge-negotiable">Price negotiable; let's talk</span>
                         </div>
                         <div class="flex items-center space-x-2 mt-auto">
-                            <button onclick="addToCart(${listing.id})" class="flex-1 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                            <button onclick="addToCart(${listing.id}, event)" class="flex-1 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
                                 <i class="fas fa-plus mr-1"></i> Add to Inquiry
                             </button>
                             <button onclick="openDetail(${listing.id})" class="px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            ${hasUrl ? `
-                            <button onclick="launchApp(${listing.id})" class="btn-launch px-3 py-2 text-sm font-medium rounded-lg" title="Take Me to the App">
-                                <i class="fas fa-external-link-alt mr-1"></i> App
-                            </button>` : ''}
+                            ${hasUrl ? `<a href="${escapeHtml(listing.current_url)}" target="_blank" rel="noopener noreferrer" class="btn-launch px-3 py-2 text-sm font-medium rounded-lg" title="Open application in a new tab"><i class="fas fa-external-link-alt mr-1"></i> App</a>` : `<button onclick="requestDemo(${listing.id})" class="px-3 py-2 text-sm font-medium border border-indigo-300 text-indigo-700 rounded-lg">Request demo</button>`}
                         </div>
                     </div>
                 </div>`;
@@ -383,9 +1073,10 @@
             document.getElementById('cartOverlay').classList.toggle('hidden');
         }
         
-        function addToCart(id) {
+        function addToCart(id, e) {
+            if (!getListingById(id)) return;
             if (!cart.includes(id)) { cart.push(id); saveCart(); }
-            const btn = event.target.closest('button');
+            const btn = e && e.target.closest('button');
             if (btn) {
                 const original = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
@@ -432,14 +1123,14 @@
                         <span class="text-gray-300">|</span>
                         <span class="text-xs text-gray-500">${escapeHtml(l.type)}</span>
                     </div>
-                    <p class="text-gray-700">${escapeHtml(l.description)}</p>
+                    <p class="text-gray-700">${escapeHtml(l.description)}</p><p class="text-sm text-gray-500">${escapeHtml(l.access_note)}</p>
                     <div><h4 class="text-sm font-semibold text-gray-900 mb-2">Tech Stack</h4><div class="flex flex-wrap gap-1">${(l.tech_stack || []).map(t => `<span class="tag text-sm">${escapeHtml(t)}</span>`).join('')}</div></div>
                     <div class="flex items-center text-sm text-gray-500"><i class="far fa-clock mr-1"></i> Estimated build: ${l.weeks} weeks</div>
                     ${hasUrl ? `<div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600 font-mono break-all"><strong class="text-gray-800">Live URL:</strong> ${escapeHtml(l.current_url)}</div>` : ''}
                     <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800"><i class="fas fa-tag mr-1"></i> <strong>Price negotiable; let's talk</strong> — we scope based on your needs.</div>
                     <div class="flex items-center space-x-3">
-                        <button onclick="addToCart(${l.id});closeDetail();" class="flex-1 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-plus mr-2"></i> Add to Inquiry</button>
-                        ${hasUrl ? `<button onclick="launchApp(${l.id});closeDetail();" class="btn-launch flex-1 py-3 font-semibold rounded-lg"><i class="fas fa-external-link-alt mr-2"></i> Take Me to the App</button>` : ''}
+                        <button onclick="addToCart(${l.id}, event);closeDetail();" class="flex-1 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition"><i class="fas fa-plus mr-2"></i> Add to Inquiry</button>
+                        ${hasUrl ? `<a href="${escapeHtml(l.current_url)}" target="_blank" rel="noopener noreferrer" class="btn-launch flex-1 py-3 font-semibold rounded-lg text-center"><i class="fas fa-external-link-alt mr-2"></i> Open App</a>` : `<button onclick="requestDemo(${l.id})" class="flex-1 py-3 border border-indigo-300 text-indigo-700 rounded-lg">Request demo</button>`}
                     </div>
                 </div>`;
             document.getElementById('detailModal').classList.remove('hidden');
@@ -448,12 +1139,8 @@
 
         function launchApp(id) {
             const l = getListingById(id);
-            if (!l || !l.current_url) return;
-            document.getElementById('appViewerTitle').textContent = l.title;
-            document.getElementById('appViewerUrl').textContent = l.current_url;
-            document.getElementById('appIframe').src = l.current_url;
-            document.getElementById('appViewer').classList.add('active');
-            history.pushState({ appViewer: true }, '', '#app-viewer');
+            if (!l || !l.current_url) return requestDemo(id);
+            window.open(l.current_url, '_blank', 'noopener,noreferrer');
         }
         function closeAppViewer() {
             document.getElementById('appViewer').classList.remove('active');
@@ -467,6 +1154,7 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' || e.key === 'Esc') {
+                if (!document.getElementById('inquiryModal').classList.contains('hidden')) return closeInquiry();
                 if (document.getElementById('appViewer').classList.contains('active')) return closeAppViewer();
                 if (!document.getElementById('detailModal').classList.contains('hidden')) return closeDetail();
                 if (!document.getElementById('cartDrawer').classList.contains('translate-x-full')) return toggleCart();
@@ -491,6 +1179,30 @@
             }, 2800);
         }
 
+
+        function scrollToGrid() { document.getElementById('listingsGrid').scrollIntoView({behavior:'smooth'}); }
+        function scrollToInquiry() { openInquiryFromCart(); }
+        function openInquiryFromCart() {
+            const selected = cart.map(getListingById).filter(Boolean);
+            document.getElementById('inquiryCartList').textContent = selected.length ? selected.map(l => l.title).join('; ') : 'General inquiry — tell us how we can help.';
+            document.getElementById('inquiryModal').classList.remove('hidden');
+            document.getElementById('cartDrawer').classList.add('translate-x-full');
+            document.getElementById('cartOverlay').classList.add('hidden');
+        }
+        function closeInquiry() { document.getElementById('inquiryModal').classList.add('hidden'); }
+        function requestDemo(id) {
+            if (getListingById(id) && !cart.includes(id)) { cart.push(id); saveCart(); }
+            closeDetail(); openInquiryFromCart();
+        }
+        function submitInquiry(e) {
+            e.preventDefault();
+            const data = new FormData(e.target);
+            const selected = cart.map(getListingById).filter(Boolean).map(l => '- ' + l.title).join('\n');
+            const body = 'Name: ' + data.get('name') + '\nEmail: ' + data.get('email') + '\nCompany: ' + (data.get('company') || '') + '\n\nApplications:\n' + (selected || 'General inquiry') + '\n\n' + (data.get('message') || '');
+            window.location.href = 'mailto:cuthbert@oecstrading.com?subject=' + encodeURIComponent('OECS software inquiry') + '&body=' + encodeURIComponent(body);
+            showToast('Email draft requested. Review and send it in your email app.');
+        }
+
         function init() {
             populateFilters();
             renderListings();
@@ -504,3 +1216,4 @@
     </script>
 </body>
 </html>
+
