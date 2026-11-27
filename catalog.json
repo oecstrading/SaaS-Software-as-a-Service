@@ -818,5 +818,39 @@
     "access_note": "Open application or demonstration.",
     "url": "https://oecstrading.github.io/AI-Powered-Data-Analytics-Engineer/",
     "format": "Demonstration"
+  },
+  {
+    "id": 44,
+    "title": "IslandBuild ERP",
+    "industry": "Construction & Equipment Rental",
+    "type": "Construction Management & Accounting",
+    "description": "Manage construction jobs from signed contract and variations through progress billing, sign-off, payments and retention. Track tool rentals, inventory and job costs, and use earned value dashboards to compare work planned, work completed and actual spending.",
+    "tech_stack": [
+      "HTML/CSS",
+      "JavaScript",
+      "Browser Storage"
+    ],
+    "current_url": "https://oecstrading.github.io/IslandBuild-ERP/?demo=1",
+    "access_note": "Open the sample workspace to try fictional construction projects, rental and accounting workflows.",
+    "featured": true,
+    "url": "https://oecstrading.github.io/IslandBuild-ERP/?demo=1",
+    "format": "Demonstration"
+  },
+  {
+    "id": 45,
+    "title": "Deglos Waste Reporting and MRV — Saint Lucia",
+    "industry": "Climate & dMRV",
+    "type": "Landfill Monitoring & Reporting",
+    "description": "GCFT demonstration for Deglos landfill. Explore historical disposal data, monthly reporting, transfer and diversion reconciliation, reviewer decisions, and illustrative methane monitoring and flare performance.",
+    "tech_stack": [
+      "HTML/CSS",
+      "JavaScript",
+      "GCFT"
+    ],
+    "current_url": "https://oecstrading.github.io/Biogas-St-Lucia-Filling-Station-Pilot/deglos-mrv/",
+    "access_note": "Interactive pilot demonstration with published baseline data and illustrative operating records.",
+    "featured": true,
+    "url": "https://oecstrading.github.io/Biogas-St-Lucia-Filling-Station-Pilot/deglos-mrv/",
+    "format": "Demonstration"
   }
 ]

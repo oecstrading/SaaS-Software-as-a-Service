@@ -970,8 +970,42 @@
                         "current_url": "https://oecstrading.github.io/AI-Powered-Data-Analytics-Engineer/",
                         "link_checked": "2026-11-15",
                         "access_note": "Open application or demonstration."
+            },
+            {
+              "id": 44,
+              "title": "IslandBuild ERP",
+              "industry": "Construction & Equipment Rental",
+              "type": "Construction Management & Accounting",
+              "description": "Manage construction jobs from signed contract and variations through progress billing, sign-off, payments and retention. Track tool rentals, inventory and job costs, and use earned value dashboards to compare work planned, work completed and actual spending.",
+              "tech_stack": [
+                "HTML/CSS",
+                "JavaScript",
+                "Browser Storage"
+              ],
+              "current_url": "https://oecstrading.github.io/IslandBuild-ERP/?demo=1",
+              "access_note": "Open the sample workspace to try fictional construction projects, rental and accounting workflows.",
+              "featured": true,
+              "url": "https://oecstrading.github.io/IslandBuild-ERP/?demo=1",
+              "format": "Demonstration"
+            },
+            {
+              "id": 45,
+              "title": "Deglos Waste Reporting and MRV — Saint Lucia",
+              "industry": "Climate & dMRV",
+              "type": "Landfill Monitoring & Reporting",
+              "description": "GCFT demonstration for Deglos landfill. Explore historical disposal data, monthly reporting, transfer and diversion reconciliation, reviewer decisions, and illustrative methane monitoring and flare performance.",
+              "tech_stack": [
+                "HTML/CSS",
+                "JavaScript",
+                "GCFT"
+              ],
+              "current_url": "https://oecstrading.github.io/Biogas-St-Lucia-Filling-Station-Pilot/deglos-mrv/",
+              "access_note": "Interactive pilot demonstration with published baseline data and illustrative operating records.",
+              "featured": true,
+              "url": "https://oecstrading.github.io/Biogas-St-Lucia-Filling-Station-Pilot/deglos-mrv/",
+              "format": "Demonstration"
             }
-];
+        ];
 
         // Load state from localStorage or initialize
         const deepFreeze = value => { Object.values(value).forEach(v => { if (v && typeof v === 'object') deepFreeze(v); }); return Object.freeze(value); };
@@ -999,7 +1033,7 @@
             if (currentFilter.type) filtered = filtered.filter(l => l.type === currentFilter.type);
 
             if (currentFilter.sort === 'name') filtered.sort((a, b) => a.title.localeCompare(b.title));
-            else if (currentFilter.sort === 'weeks') filtered.sort((a, b) => a.weeks - b.weeks);
+            else if (currentFilter.sort === 'weeks') filtered.sort((a, b) => (a.weeks ?? Infinity) - (b.weeks ?? Infinity));
             else if (currentFilter.sort === 'industry') filtered.sort((a, b) => a.industry.localeCompare(b.industry));
 
             document.getElementById('resultCount').textContent = filtered.length;
@@ -1025,8 +1059,7 @@
                             ${(listing.tech_stack || []).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
                         </div>
                         <div class="flex items-center text-xs text-gray-500 mb-4">
-                            <i class="far fa-clock mr-1"></i> ${listing.weeks} weeks
-                            <span class="mx-2">•</span>
+                            ${Number.isFinite(listing.weeks) ? `<i class="far fa-clock mr-1"></i> ${listing.weeks} weeks <span class="mx-2">•</span>` : ''}
                             <span class="badge-negotiable">Price negotiable; let's talk</span>
                         </div>
                         <div class="flex items-center space-x-2 mt-auto">
@@ -1125,7 +1158,7 @@
                     </div>
                     <p class="text-gray-700">${escapeHtml(l.description)}</p><p class="text-sm text-gray-500">${escapeHtml(l.access_note)}</p>
                     <div><h4 class="text-sm font-semibold text-gray-900 mb-2">Tech Stack</h4><div class="flex flex-wrap gap-1">${(l.tech_stack || []).map(t => `<span class="tag text-sm">${escapeHtml(t)}</span>`).join('')}</div></div>
-                    <div class="flex items-center text-sm text-gray-500"><i class="far fa-clock mr-1"></i> Estimated build: ${l.weeks} weeks</div>
+                    ${Number.isFinite(l.weeks) ? `<div class="flex items-center text-sm text-gray-500"><i class="far fa-clock mr-1"></i> Estimated build: ${l.weeks} weeks</div>` : ''}
                     ${hasUrl ? `<div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600 font-mono break-all"><strong class="text-gray-800">Live URL:</strong> ${escapeHtml(l.current_url)}</div>` : ''}
                     <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800"><i class="fas fa-tag mr-1"></i> <strong>Price negotiable; let's talk</strong> — we scope based on your needs.</div>
                     <div class="flex items-center space-x-3">
