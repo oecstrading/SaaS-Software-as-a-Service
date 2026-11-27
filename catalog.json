@@ -823,7 +823,7 @@
     "id": 44,
     "title": "IslandBuild ERP",
     "industry": "Construction & Equipment Rental",
-    "type": "Construction Management & Accounting",
+    "type": "Accounting & Finance",
     "description": "Manage construction jobs from signed contract and variations through progress billing, sign-off, payments and retention. Track tool rentals, inventory and job costs, and use earned value dashboards to compare work planned, work completed and actual spending.",
     "tech_stack": [
       "HTML/CSS",
